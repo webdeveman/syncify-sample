@@ -5,10 +5,12 @@
   "main": "index.js",
   "scripts": {
     "dev": "syncify syncify -t dev --watch --minify",
+    "new-dev": "syncify uniun-sandbox --watch --minify",
     "build": "syncify -t dev --build --prod --clean",
     "upload": "syncify dev --upload",
     "script": "syncify --script",
     "style": "syncify --style",
+    "help": "syncify --help",
     "vsc": "syncify -vsc --i",
     "svg": "syncify --svg",
     "image": "syncify --image",
