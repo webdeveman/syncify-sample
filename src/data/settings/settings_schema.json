@@ -1,10 +1,42 @@
 [
   {
     "name": "theme_info",
-    "theme_name": "Skeleton theme",
+    "theme_name": "WIP - AGJ",
     "theme_version": "1.0.0",
-    "theme_author": "THEME_AUTHOR",
-    "theme_documentation_url": "https:\/\/THEME_DOCUMENTATION_URL.com\/",
-    "theme_support_url": "https:\/\/THEME_SUPPORT_URL.com\/"
+    "theme_author": "WIP",
+    "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
+    "theme_support_url": "https://support.shopify.com/"
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Theme Color Settings"
+      },
+      {
+        "type": "color",
+        "id": "page_background",
+        "label": "Page Background Colors"
+      },
+      {
+        "type": "color",
+        "id": "primary_color",
+        "label": "Primary Theme Color",
+        "info": "Primary color used for non-page backgrounds and buttons"
+      },
+      {
+        "type": "color",
+        "id": "accent_color_1",
+        "label": "Accent Color 1",
+        "info": "Accents will be used through the theme and will be assignable in sections and blocks"
+      },
+      {
+        "type": "color",
+        "id": "accent_color_2",
+        "label": "Accent Color 2",
+        "info": "Accents will be used through the theme and will be assignable in sections and blocks"
+      }
+    ]
   }
 ]

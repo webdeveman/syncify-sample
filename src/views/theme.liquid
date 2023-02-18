@@ -1,25 +1,38 @@
 <!doctype html>
-<html lang="{{ shop.locale }}">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="">
-  <link rel="canonical" href="{{ canonical_url }}">
+<html lang="{{ shop.locale }}" lang="{{ request.locale.iso_code }}">
+  <head>
 
-  <title>{{ shop.name }}</title>
+    {% render 'head-meta-tags' %}
+    {% render 'style-tags', layout: 'theme' %}
+    {% render 'script-object-map' %}
+    {% render 'script-tags', layout: 'theme' %}
 
-  <meta name="description" content="">
+    {{ content_for_header }}
 
-  {% include 'style-tags', layout: 'theme' %}
-  {% include 'script-tags', layout: 'theme' %}
-
-  {{ content_for_header }}
-</head>
+  </head>
 
 
-<body>
-  Is this the theme  
-  {{ content_for_layout }}
-</body>
+  <body class="">
+    <a class="skip-to-content-link button sr-only" href="#MainContent">
+      {{ "accessibility.skip_to_text" | t }}
+    </a>
+    {% section 'layout-announcement-bar' %}
+
+    <main
+      id="MainContent"
+      class="content-for-layout focus-none"
+      role="main"
+      tabindex="-1">
+      Body
+      {{ content_for_layout }}
+    </main>
+
+    {% comment %}a11y compliance{% endcomment %}
+    <ul hidden>
+      <li id="a11y-refresh-page-message">{{ 'accessibility.refresh_page' | t }}</li>
+      <li id="a11y-new-window-message">{{ 'accessibility.link_messages.new_window' | t }}</li>
+    </ul>
+
+
+  </body>
 </html>

@@ -9,10 +9,21 @@ export default defineConfig({
   import: 'import',
   export: 'export',
   stores: {
-    domain: 'uniun-sandbox',
+    domain: 'emanwebdev',
     themes: {
-      dev: 143847784743
+      dev: 139624349983
     }
+  },
+  hot: {
+    label: 'visible',
+    method: 'hot',
+    inject: true,
+    scroll: 'preserved',
+    server: 3000,
+    socket: 8089,
+    layouts: [
+      'theme.liquid'
+    ],
   },
   paths: {
     assets: [
@@ -33,7 +44,8 @@ export default defineConfig({
   },
   transforms: {
     script: {
-      'assets/bundle.min.js': 'assets/scripts/bundle.ts'
+      'assets/bundle.min.js': 'assets/scripts/bundle.ts',
+      'assets/[dir]-[file].js': ['assets/scripts/components/*']
     },
     svg: {
       'snippets/icons.liquid': {
@@ -49,20 +61,33 @@ export default defineConfig({
     style: {
       'assets/stylesheet.min.css': {
         input: 'assets/styles/stylesheet.scss',
-        sass: true,
-        watch: [ 'assets/styles/base/*' ]
-      }
+        watch: [ 'assets/styles/base/*' ],
+        postcss: true,
+        sass: true
+      },
+      'assets/tailwind.css': {
+        input: 'assets/styles/tailwind.css',
+        sass: false,
+        postcss: true
+      },
     }
   },
   views: {
     sections: {
       prefixDir: true,
       separator: '-',
-      global: []
+      global: [
+        'header'
+      ]
     },
     pages: {
       language: 'markdown',
       suffixDir: false
+    }
+  },
+  spawn: {
+    watch: {
+      tailwind: 'npx tailwindcss -i ./src/assets/styles/base.css -o ./src/assets/styles/tailwind.css --watch',
     }
   },
   processors: {

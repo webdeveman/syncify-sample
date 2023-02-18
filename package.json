@@ -6,9 +6,12 @@
   "scripts": {
     "dev": "syncify syncify -t dev --watch --minify",
     "build": "syncify -t dev --build --prod --clean",
+    "new-dev": "syncify emanwebdev --watch --hot --minify",
     "upload": "syncify dev --upload",
     "script": "syncify --script",
+    "help": "syncify --help",
     "style": "syncify --style",
+    "syncify": "syncify",
     "vsc": "syncify -vsc --i",
     "svg": "syncify --svg",
     "image": "syncify --image",
@@ -24,6 +27,10 @@
     "postcss": "^8.4.21",
     "sass": "^1.57.1",
     "svg-sprite": "^2.0.2",
-    "svgo": "^3.0.2"
+    "svgo": "^3.0.2",
+    "tailwindcss": "^3.2.7"
+  },
+  "dependencies": {
+    "spx": "^0.0.4-beta.1"
   }
 }

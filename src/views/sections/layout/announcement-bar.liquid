@@ -1,0 +1,28 @@
+<div style="background-color: {{ section.settings.background }}; color: {{ section.settings.text_color }}">
+  <p>Hot reload Isn't working</p>
+  <a href="/collections/all">All</a>
+  <a href="/">Home</a>
+</div>
+
+{% schema %}
+  {
+    "name": "Announcement Bar",
+    "class": "announcement-bar",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Announcement Bar"
+      }, {
+        "type": "color",
+        "id": "background",
+        "label": "Background Color",
+        "info": "Background color for bar"
+      }, {
+        "type": "color",
+        "id": "text_color",
+        "label": "Text Color",
+        "info": "Color for text inside bar"
+      }
+    ]
+  }
+{% endschema %}
