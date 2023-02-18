@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "syncify syncify -t dev --watch --minify",
+    "new-dev": "syncify uniun-sandbox --watch --minify",
     "build": "syncify -t dev --build --prod --clean",
     "new-dev": "syncify emanwebdev --watch --hot --minify",
     "upload": "syncify dev --upload",
