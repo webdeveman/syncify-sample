@@ -1,7 +1,22 @@
-<div style="background-color: {{ section.settings.background }}; color: {{ section.settings.text_color }}">
-  <p>Hot reload Isn't working</p>
-  <a href="/collections/all">All</a>
-  <a href="/">Home</a>
+<div class="text-center text-xs [&_a]:font-bold" style="background-color: {{ section.settings.background }}; color: {{ section.settings.text_color }}">
+  {% if section.blocks.size > 1 %}
+    <div class="w-full">
+      {% capture slides %}
+        {% for block in section.blocks %}
+          <div class="py-2 embla-slide w-full">{{ block.settings.title }}</div>
+        {% endfor %}
+      {% endcapture %}
+
+      {% render 'embla-carousel' with slides: slides %}
+    </div>
+  {% else %}
+    {%-  liquid 
+       assign block = section.blocks[0]
+    -%}
+    <div class="w-full py-2">
+      {{ block.settings.title }}
+    </div>
+  {% endif %}
 </div>
 
 {% schema %}
@@ -22,6 +37,22 @@
         "id": "text_color",
         "label": "Text Color",
         "info": "Color for text inside bar"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "message",
+        "name": "Message",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Announcement Message"
+          }, {
+            "type": "richtext",
+            "id": "title",
+            "label": "Message"
+          }
+        ]
       }
     ]
   }

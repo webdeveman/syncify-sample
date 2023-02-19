@@ -45,7 +45,7 @@ export default defineConfig({
   transforms: {
     script: {
       'assets/bundle.min.js': 'assets/scripts/bundle.ts',
-      'assets/[dir]-[file].js': ['assets/scripts/components/*']
+      'assets/[dir]-[file].js': 'assets/scripts/components/*'
     },
     svg: {
       'snippets/icons.liquid': {
