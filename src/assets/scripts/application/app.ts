@@ -7,7 +7,7 @@ import { ssm } from './utils';
 export function app ({ targets, screens, controllers }) {
 
   spx.connect({
-      targets: ['#main'],
+      targets,
       hover: {
         trigger: 'href',
         threshold: 100
