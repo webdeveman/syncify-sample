@@ -25,6 +25,9 @@ export default defineConfig({
       'theme.liquid'
     ],
   },
+  logger: {
+    clear: false
+  },
   paths: {
     assets: [
       'assets/images/*',
@@ -45,31 +48,28 @@ export default defineConfig({
   transforms: {
     script: {
       'assets/bundle.min.js': 'assets/scripts/bundle.ts',
-      'assets/[dir]-[file].js': 'assets/scripts/components/*'
+      // If you uncomment this, the syncify will warn on inputs in use.
+      //'assets/[dir]-[file].js': 'assets/scripts/components/*'
     },
     svg: {
-      'snippets/icons.liquid': {
-        input: 'assets/icons/sprite/*.svg',
-        format: 'sprite'
-      },
-      'snippets/check.icon.liquid': {
-        format: 'file',
-        input: 'assets/pictograms/man.svg',
-        snippet: true
-      }
+      // You don't need this for now
+      //
+      // 'snippets/icons.liquid': {
+      //   input: 'assets/icons/sprite/*.svg',
+      //   format: 'sprite'
+      // },
+      // 'snippets/check.icon.liquid': {
+      //   format: 'file',
+      //   input: 'assets/pictograms/man.svg',
+      //   snippet: true
+      // }
     },
     style: {
-      'assets/stylesheet.min.css': {
-        input: 'assets/styles/stylesheet.scss',
-        watch: [ 'assets/styles/base/*' ],
-        postcss: true,
-        sass: true
-      },
       'assets/tailwind.css': {
         input: 'assets/styles/tailwind.css',
         sass: false,
         postcss: true
-      },
+      }
     }
   },
   views: {
@@ -87,28 +87,23 @@ export default defineConfig({
   },
   spawn: {
     watch: {
-      tailwind: 'npx tailwindcss -i ./src/assets/styles/base.css -o ./src/assets/styles/tailwind.css --watch',
+      tailwind: 'pnpx tailwindcss -i ./src/assets/styles/base.css -o ./src/assets/styles/tailwind.css --watch',
     }
   },
   processors: {
     esbuild: {
       format: 'esm',
       bundle: true,
-      sourcemap: true
+      sourcemap: true,
     },
     sprite: {
-      svg: {
-        dimensionAttributes: true,
-        namespaceIDs: true,
-        rootAttributes: {
-          class: 'd-none'
-        }
-      }
-    },
-    sass: {
-      sourcemap: true,
-      style: 'compressed',
-      include: [ 'node_modules' ]
+      // svg: {
+      //   dimensionAttributes: true,
+      //   namespaceIDs: true,
+      //   rootAttributes: {
+      //     class: 'd-none'
+      //   }
+      // }
     },
     postcss: [
       autoprefix()

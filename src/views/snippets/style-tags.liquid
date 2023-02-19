@@ -1,2 +1,17 @@
-{{ 'stylesheet.min.css' | asset_url | stylesheet_tag }}
-{{ 'tailwind.css' | asset_url | stylesheet_tag }}
+{% # STYLESHEET PRELOADS %}
+
+<link
+  as="style"
+  crossorigin
+  href="{{ 'stylesheet.min.css' | asset_url }}"
+  rel="stylesheet preload">
+
+<link
+  as="style"
+  crossorigin
+  href="{{ 'tailwind.css' | asset_url }}"
+  rel="stylesheet preload">
+
+
+<link href="{{ 'stylesheet.min.css' | asset_url }}" rel="stylesheet">
+<link href="{{ 'tailwind.css' | asset_url }}" rel="stylesheet">

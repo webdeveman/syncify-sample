@@ -1,45 +1,35 @@
-import spx from 'spx';
+import { app } from 'application/app';
+import { Carousel } from 'components/carousel'
+import { Accordion } from 'components/accordion'
 
-spx.connect({
-    targets: ['body'],
-    timeout: 30000,
-    schema: 'spx',
-    cache: true,
-    limit: 100,
-    preload: null,
-    async: true,
-    annotate: false,
-    hover: {
-      trigger: 'attribute',
-      threshold: 250
-    },
-    intersect: {
-      rootMargin: '0px 0px 0px 0px',
-      threshold: 0
-    },
-    proximity: {
-      distance: 75,
-      threshold: 250,
-      throttle: 500
-    },
-    progress: {
-      background: '#111',
-      height: '3px',
-      minimum: 0.09,
-      easing: 'linear',
-      speed: 300,
-      trickle: true,
-      threshold: 500,
-      trickleSpeed: 300
-    }
-})(function(session) {
+export default app({
 
-    // The connect returns a callback function after
-    // connection was established. Lets inspect the session:
-    console.log('spx session', session);
-  
-    // You initialize third party js in this callback
-    // It's the equivalent of DOMContentLoaded.
-    
+  /**
+   * Small wrapped for defining target which will change
+   * on a per-page basis which SPX should invoke
+   */
+  targets: [
+    '#main',
+    '#navbar'
+  ],
+
+  /**
+   * This allows us to define different viewports and apply
+   */
+  screens: {
+    xs: '(max-width: 576px)',
+    sm: '(min-width: 577px) and (max-width: 767px)',
+    md: '(min-width: 768px) and (max-width: 991px)',
+    lg: '(min-width: 992px) and (max-width: 1199px)',
+    xl: '(min-width: 1200px) and (max-width: 1399px)',
+    xxl: '(min-width: 1400px)'
+  },
+
+  /**
+   * Here is where we will add all our Stimulus controllers.
+   */
+  controllers: {
+    Accordion,
+    Carousel
+  }
 });
-console.log('Spx Connect', spx);

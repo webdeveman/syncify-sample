@@ -1,0 +1,24 @@
+{
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true // VSCode will run faster when node_modules is excluded
+  },
+  "npm.packageManager": "pnpm",
+  "eslint.packageManager": "pnpm",
+  "editor.foldingStrategy": "indentation",
+  "editor.semanticHighlighting.enabled": false,
+  "javascript.validate.enable": true,
+  "javascript.suggestionActions.enabled": false,
+  "html.validate.scripts": false,
+  "html.validate.styles": false,
+  "html.customData": [
+    "./.vscode/custom-data/accordion.html-data.json",
+    "./.vscode/custom-data/carousel.html-data.json",
+    "./.vscode/custom-data/spx.html-data.json",
+    "./.vscode/custom-data/stimulus.html-data.json",
+  ]
+}

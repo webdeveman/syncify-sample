@@ -1,0 +1,102 @@
+{
+  "version": 1.1,
+  "globalAttributes": [
+    {
+      "name": "data-carousel-axis-value",
+      "description": "Choose scroll axis between x and y. Remember to stack your slides horizontally or vertically using CSS to match this option.",
+      "values": [
+        {
+          "name": "x"
+        },
+        {
+          "name": "y"
+        }
+      ]
+    },
+    {
+      "name": "data-carousel-drag-free-value",
+      "description": "Enables momentum scrolling. The speed and duration of the continued scrolling is proportional to how vigorous the drag gesture is. Defaults to `true`",
+      "valueSet": "boolean"
+    },
+    {
+      "name": "data-carousel-draggable-value",
+      "description": "Enables for scrolling the carousel with mouse and touch interactions. Defaults to `true`",
+      "valueSet": "boolean"
+    },
+    {
+      "name": "data-carousel-loop-value",
+      "description": "Enables infinite looping. Automatically falls back to false if slide content isn't enough to loop. Embla will apply translateX or translateY to the slides that need to change position in order to create the loop effect. Defaults to `true`",
+      "valueSet": "boolean"
+    },
+    {
+      "name": "data-carousel-skip-snaps-value",
+      "description": "Allow the carousel to skip scroll snaps if it's dragged vigorously. Note that this option will be ignored if the dragFree option is set to true. Defaults to `true`",
+      "valueSet": "boolean"
+    },
+    {
+      "name": "data-carousel-contain-scroll-value",
+      "description": "Clear leading and trailing empty space that causes excessive scrolling. Use trimSnaps to only use snap points that trigger scrolling or keepSnaps to keep them.",
+      "values": [
+        {
+          "name": "trimSnaps"
+        },
+        {
+          "name": "keepSnaps"
+        }
+      ]
+    },
+    {
+      "name": "data-carousel-start-index-value",
+      "description": "Set the initial scroll snap to the given number. First snap index starts at 0. Please note that this is not necessarily equal to the number of slides when used together with the slidesToScroll option. Defaults to `0`"
+    },
+    {
+      "name": "data-carousel-speed-value",
+      "description": "Adjust scroll speed when triggered by any of the API methods. Higher numbers enables faster scrolling. Drag interactions are not affected because speed is then determined by the drag force. Only values between 1-20 are recommended. Defaults to `10`\n\n**Note:** The speed option is actually controlling the magnitude of the attraction force to the target (where the carousel is headed). This is because Embla uses a simple physics simulation when scrolling instead of transitions."
+    },
+    {
+      "name": "data-carousel-breakpoint-value",
+      "description": "The breakpoints at which the carousel logic should be invoked and applied.",
+      "valueSet": "breakpoint"
+    }
+  ],
+  "valueSets": [
+    {
+      "name": "boolean",
+      "values": [
+        {
+          "name": "true",
+          "description": "Enabled"
+        },
+        {
+          "name": "false",
+          "description": "Disabled"
+        }
+      ]
+    },
+    {
+      "name": "breakpoint",
+      "values": [
+        {
+          "name": "xs",
+          "description": "Visible until the `xs` viewport screen width."
+        },
+        {
+          "name": "sm",
+          "description": "Visible until the `sm` viewport screen width."
+        },
+        {
+          "name": "md",
+          "description": "Visible until the `md` viewport screen width."
+        },
+        {
+          "name": "lg",
+          "description": "Visible until the `lg` viewport screen width."
+        },
+        {
+          "name": "xl",
+          "description": "Visible until the `xl` viewport screen width."
+        }
+      ]
+    }
+  ]
+}

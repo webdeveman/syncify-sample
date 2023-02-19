@@ -13,13 +13,19 @@
 
 
   <body class="">
+
     <a class="skip-to-content-link button sr-only" href="#MainContent">
       {{ "accessibility.skip_to_text" | t }}
     </a>
-    {% section 'layout-announcement-bar' %}
 
+    {% # We give this an id because we define it in SPX targets. %}
+    <nav id="navbar">
+    {% section 'layout-announcement-bar' %}
+    </nav>
+
+    {% # We give this an id because we define it in SPX targets. %}
     <main
-      id="MainContent"
+      id="main"
       class="content-for-layout focus-none"
       role="main"
       tabindex="-1">

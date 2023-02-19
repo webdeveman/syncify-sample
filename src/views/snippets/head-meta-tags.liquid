@@ -15,16 +15,21 @@
     href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
 {%- endif -%}
 
-
 <title>
-  {{ page_title }}
-  {%- if current_tags %}
-    &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
-  {%- if current_page != 1 %}
-    &ndash; Page {{ current_page }}{% endif -%}
-  {%- unless page_title contains shop.name %}
-    &ndash; {{ shop.name }}{% endunless -%}
+  {% liquid
+    echo page_title
+    if current_tags
+      assign meta_tags = current_tags | join: ", "
+      echo "general.meta.tags" | t: tags: meta_tags | prepend: " &ndash; "
+    endif
+    if current_page != 1
+      echo "general.meta.page" | t: page: current_page | prepend: " &ndash; "
+    endif
+    unless page_title contains shop.name
+      echo shop.name | prepend: " | "
+    endunless %}
 </title>
+
 
 {% if page_description %}
   <meta name="description" content="{{ page_description | escape }}">

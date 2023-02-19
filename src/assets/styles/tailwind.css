@@ -567,6 +567,10 @@ video {
   display: flex;
 }
 
+.table {
+  display: table;
+}
+
 .hidden {
   display: none;
 }
@@ -575,12 +579,8 @@ video {
   width: 100%;
 }
 
-.flex-shrink-0 {
-  flex-shrink: 0;
-}
-
-.flex-grow-0 {
-  flex-grow: 0;
+.resize {
+  resize: both;
 }
 
 .overflow-hidden {

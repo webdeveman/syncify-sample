@@ -1,0 +1,70 @@
+
+{% comment %}
+  The carousel breakpoint is used to initialise the carousel
+  only when those screen sizes are detected. This allows us to
+  convert the images to a carousel in mobile and table but not
+  in desktop. The resize@window->caoursel#screen is what we will
+  use to listen for changes and when the screen matches the media-query
+  ids we assigned in the bundle.ts (`app({ })`) function at runtime
+  matches, then the carousel will activate.
+
+  Remove the data-action and data-carousel-breakpoint-value attributes
+  to disable this behaviour and have the carousel render in all screens.
+{% endcomment %}
+<div
+  class="embla overflow-hidden"
+  data-controller="carousel"
+  data-carousel-loop-value="true"
+  data-carousel-breakpoint-value="xs|sm|md"
+  data-action="resize@window->carousel#screen">
+
+  <div class="embla__container flex [&_.embla-slide]:flex-shrink-0 [&_.embla-slide]:flex-grow-0">
+    {% for block in section.blocks %}
+      {% if block.type == 'image' %}
+        <div>
+          <a href="{{ block.settings.href }}">
+            <img src="{{ block.settings.image | format: 'pjpg' }}">
+          </a>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+
+{% schema %}
+  {
+    "name": "Carousel",
+    "tag": "section",
+    "class": "row jc-center ai-center",
+    "blocks": [
+      {
+        "type": "image",
+        "name": "Image",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Link",
+            "info": "Renders a href link on the hero image"
+          },
+          {
+            "type": "url",
+            "id": "href",
+            "label": "Link"
+          },
+          {
+            "type": "header",
+            "content": "Images",
+            "info": "Choose or upload desktop and mobile images"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Desktop Image",
+            "info": "Dimensions: 1440x"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
