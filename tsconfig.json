@@ -31,7 +31,7 @@
     "pretty": true,
     "typeRoots": ["node_modules/@types"],
     "paths": {
-      "components/*": ["/source/assets/scripts/components/*.ts"]
+      "components/*": ["/src/assets/scripts/components/*.ts"]
     }
   }
 }

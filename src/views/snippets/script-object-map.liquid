@@ -19,6 +19,9 @@
         unavailable: `{{ 'products.product.unavailable' | t }}`,
         unavailable_with_option: `{{ 'products.product.value_unavailable' | t: option_value: '[value]' }}`
       }
+    },
+    components: {
+      'embla-carousel': {{ 'components-embla.js' | asset_url | json }}
     }
   }
 </script>

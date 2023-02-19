@@ -5,9 +5,10 @@
     {% render 'head-meta-tags' %}
     {% render 'style-tags', layout: 'theme' %}
     {% render 'script-object-map' %}
-    {% render 'script-tags', layout: 'theme' %}
 
     {{ content_for_header }}
+    {% render 'script-tags', layout: 'theme' %}
+
 
   </head>
 

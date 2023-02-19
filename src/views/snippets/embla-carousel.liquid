@@ -19,7 +19,10 @@ container {String} - classes to be added to the embla container
     endunless
 -%}
 
-<div class="embla overflow-hidden" data-js="embla-carousel">
+<div
+  class="embla overflow-hidden"
+  data-component
+  data-js="embla-carousel">
   {{ options }}
   <div class="embla__container flex [&_.embla-slide]:flex-shrink-0 [&_.embla-slide]:flex-grow-0">
     {{ slides }}
