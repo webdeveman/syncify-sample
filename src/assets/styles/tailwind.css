@@ -567,12 +567,20 @@ video {
   display: flex;
 }
 
+.table {
+  display: table;
+}
+
 .hidden {
   display: none;
 }
 
 .w-full {
   width: 100%;
+}
+
+.resize {
+  resize: both;
 }
 
 .overflow-hidden {

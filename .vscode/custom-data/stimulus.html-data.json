@@ -1,0 +1,41 @@
+{
+  "version": 1.1,
+  "globalAttributes": [
+    {
+      "name": "data-controller",
+      "description": "Stimulus controller element",
+      "valueSet": "controllers"
+    },
+    {
+      "name": "data-action",
+      "description": "Stimulus action trigger"
+    }
+  ],
+  "valueSets": [
+    {
+      "name": "controllers",
+      "values": [
+        {
+          "name": "accordion",
+          "description": "An accordion collapse and expand component.",
+          "references": [
+            {
+              "name": "Relapse",
+              "url": "https://github.com/panoply/relapse"
+            }
+          ]
+        },
+        {
+          "name": "carousel",
+          "description": "Carousel Component",
+          "references": [
+            {
+              "name": "Embla",
+              "url": "https://www.embla-carousel.com/api/options/"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

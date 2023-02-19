@@ -1,0 +1,86 @@
+:root {
+  --relapse-border-width: 1px;
+  --relapse-border-color: #e5e5e5;
+  --relapse-padding: 50px;
+  --relapse-transition-height: 225ms;
+  --relapse-transition-opacity: 200ms;
+  --relapse-transition-timing: ease-in-out;
+}
+
+
+.relapse {
+  border: var(--relapse-border-width) solid var(--relapse-border-color);
+  border-top: none;
+  display: block;
+  position: relative;
+  width: 100%;
+}
+
+.relapse-btn {
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+  border: none;
+  border-radius: 0;
+  border-top: var(--relapse-border-width) solid var(--relapse-border-color);
+  cursor: pointer;
+  display: inherit;
+  font-size: inherit;
+  margin: 0;
+  padding: inherit;
+  text-align: left;
+  user-select: none;
+  width: 100%;
+}
+
+.relapse-btn,
+.relapse-btn.initial {
+  background-color: inherit;
+  color: inherit;
+}
+
+.relapse-btn.focused {
+  background-color: inherit;
+  outline: none;
+}
+
+.relapse-btn.initial + .relapse-fold {
+  max-height: unset;
+  opacity: 1;
+  visibility: visible;
+}
+
+.relapse-btn.opened {
+  background-color: inherit;
+  color: inherit;
+}
+
+.relapse-fold {
+  padding: 0 !important;
+  margin: 0 !important;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  will-change: opacity, max-height;
+  transition: opacity var(--relapse-transition-opacity) linear,
+    max-height var(--relapse-transition-height) var(--relapse-transition-easing);
+  -webkit-transition: opacity var(--relapse-transition-opacity) linear,
+    max-height var(--relapse-transition-height) var(--relapse-transition-easing);
+}
+
+.relapse-fold > :first-child {
+  padding: var(--relapse-padding);
+}
+
+.relapse-fold.expanded {
+  max-height: auto;
+  opacity: 1;
+  visibility: visible;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .relapse-fold {
+    -webkit-transition: none;
+    transition: none;
+  }
+}
