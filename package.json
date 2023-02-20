@@ -4,9 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "syncify syncify -t dev --watch --minify",
     "build": "syncify -t dev --build --prod --clean",
-    "new-dev": "syncify emanwebdev --watch --hot --minify",
+    "dev": "syncify emanwebdev --watch --hot --minify",
     "upload": "syncify dev --upload",
     "script": "syncify --script",
     "help": "syncify --help",
@@ -32,6 +31,7 @@
   "dependencies": {
     "@hotwired/stimulus": "^3.2.1",
     "embla-carousel": "^7.0.9",
+    "lazysizes": "^5.3.2",
     "qvp": "^0.2.1",
     "relapse": "^0.5.0",
     "spx": "0.0.5-beta.1"

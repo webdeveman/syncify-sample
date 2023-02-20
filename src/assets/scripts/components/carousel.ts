@@ -62,6 +62,7 @@ export class Carousel extends Controller {
    */
   public connect () {
 
+    // console.log('Carousel Stimulus Connect');
     if (this.enabled && !this.active) this.screen();
 
   }

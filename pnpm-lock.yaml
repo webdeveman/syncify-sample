@@ -6,6 +6,7 @@ specifiers:
   autoprefixer: ^10.4.13
   embla-carousel: ^7.0.9
   esbuild: ^0.17.9
+  lazysizes: ^5.3.2
   postcss: ^8.4.21
   qvp: ^0.2.1
   relapse: ^0.5.0
@@ -17,6 +18,7 @@ specifiers:
 dependencies:
   '@hotwired/stimulus': 3.2.1
   embla-carousel: 7.0.9
+  lazysizes: 5.3.2
   qvp: 0.2.1
   relapse: 0.5.0
   spx: 0.0.5-beta.1
@@ -1761,6 +1763,10 @@ packages:
   /kuler/2.0.0:
     resolution: {integrity: sha512-Xq9nH7KlWZmXAtodXDDRE7vs6DU1gTU8zYDHDiWLSip45Egwq3plLHzPn27NgvzL2r1LMPC1vdqh98sQxtqj4A==}
     dev: true
+
+  /lazysizes/5.3.2:
+    resolution: {integrity: sha512-22UzWP+Vedi/sMeOr8O7FWimRVtiNJV2HCa+V8+peZOw6QbswN9k58VUhd7i6iK5bw5QkYrF01LJbeJe0PV8jg==}
+    dev: false
 
   /levn/0.4.1:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}

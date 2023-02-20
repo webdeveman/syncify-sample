@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities; 
+
+.page-pad {
+    @apply px-5;
+}

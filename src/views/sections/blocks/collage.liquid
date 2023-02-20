@@ -1,0 +1,52 @@
+{%- liquid 
+
+
+    capture itemClasses
+        echo 'md:col-start-4 md:col-span-3 md:row-start-1 md:row-span-2|'
+        echo 'md:col-start-1 md:col-span-3 md:row-start-2 md:row-span-3|'
+        echo 'md:col-start-4 md:col-span-3 md:row-start-4 md:row-span-3|'
+        echo 'md:col-start-1 md:col-span-3 md:row-start-6 md:row-span-2'
+    endcapture
+
+    assign itemClasses = itemClasses | split: '|'
+-%}
+
+<div class="w-full py-10 page-pad text-center">
+  <div class="grid grid-cols-6 grid-rows-[repeat(7,1fr)] gap-x-10" data-grid>
+    {% for block in section.blocks %}
+      <div class="{{ itemClasses[forloop.index0] }} bg-gray-400">Item</div>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Collage",
+    "tag": "section",
+    "max_blocks": 4,
+    "class": "collage-style-section",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Collage Style Section"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "item",
+        "name": "Item",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Collage Item"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Collage"
+      }
+    ]
+  }
+{% endschema %}

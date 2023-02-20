@@ -5,7 +5,14 @@ module.exports = {
     './src/**/*.{liquid,json}'
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primary: 'var(--primaryColor)',
+        page: 'var(--pageBg)',
+        accent: 'var(--accentOne)',
+        accentTwo: 'var(--accentTwo)',
+      }
+    },
   },
   plugins: [],
 }

@@ -1,29 +1,76 @@
 {% comment %} 
-Params - 
-slides {HTML as String} - child slides.
-options {Script Element w/ JSON body} - should be json structure for custom options.
+PARAMS
+slides {HTML as String} - child slides
 
+Element Class Params:
 wrapper {String} - classes to be added to embla wrapper
 container {String} - classes to be added to the embla container
+
+Embla Carousel Params:
+breakpoints {String} - String value compatible w/ the Stimulus Controller Viewports ex: "xs|sm|md"
+containScroll {String} - Clear leading and trailing empty space that causes excessive scrolling. Ex: ''
+draggable {Boolean} - (true|false) as string
+dragFree {Boolean} - (true|false) as string
+loop {Boolean} - (true|false) as string
+
+skipSnaps {Boolean} - (true|false) as string
+startIndex {Number|String} - Starting index for carousel
+speed {Number|String} - 0 - 20 value 
+
 {% endcomment %}
 
 {%- liquid 
-    unless options
-        capture options
-            render 'embla-carousel-default-settings'
-        endcapture
-    endunless
 
-    unless slides
+    if breakpoints == blank
+        assign breakpoints = ''
+    endif
+
+    if containScroll == blank
+        assign containScroll = ''
+    endif
+
+    if draggable == blank
+        assign draggable = 'true'
+    endif
+
+    if dragFree == blank
+        assign dragFree = 'false'
+    endif
+
+    if loop == blank
+        assign loop = 'true'
+    endif
+
+    if skipSnaps == blank
+        assign skipSnaps = 'false'
+    endif
+
+    if startIndex == blank
+        assign startIndex = 0
+    endif
+
+    if slides == blank
         assign slides = ''
-    endunless
+    endif
+    
+    if speed == blank
+        assign speed = 10
+    endif
 -%}
+
 
 <div
   class="embla overflow-hidden"
-  data-component
-  data-js="embla-carousel">
-  {{ options }}
+  data-controller="carousel"
+  data-carousel-breakpoint-value="{{ breakpoints }}"
+  data-carousel-contain-scroll-value="{{ containScroll }}"
+  data-carousel-draggable-value="{{ draggable }}"
+  data-carousel-drag-free-value="{{ dragFree }}"
+  data-carousel-loop-value="{{ loop }}"
+  data-carousel-skip-snaps-value="{{ skipSnaps }}"
+  data-carousel-speed-value="{{ speed }}"
+  data-carousel-start-index-value="{{ startIndex }}"
+  data-action="resize@window->carousel#screen">
   <div class="embla__container flex [&_.embla-slide]:flex-shrink-0 [&_.embla-slide]:flex-grow-0">
     {{ slides }}
   </div>

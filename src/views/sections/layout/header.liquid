@@ -1,0 +1,120 @@
+<header class="relative bg-white text-xs">
+  <div class="main flex max-w-[1440px] px-4 mx-auto">
+    <div class="md:w-2/5 flex justify-start">
+      <button type="button" class="md:hidden">
+        Toggle
+      </button>
+      <div class="absolute md:static left-0 bg-primary md:bg-transparent top-full w-full md:w-auto p-2">
+        {% # Header Predictive Search %}
+        <div class="md:hidden">
+          <form
+            action="{{ routes.search_url }}"
+            method="get"
+            role="search"
+            class="search w-full">
+            <input
+              type="hidden"
+              name="type"
+              value="product" />
+            <input
+              name="options[prefix]"
+              type="hidden"
+              value="last">
+            <div class="relative">
+              <input
+                class="w-full py-2 pl-2 text-sm border"
+                type="search"
+                name="q"
+                value="{{ search.terms | escape }}"
+                id="nav-search"
+                placeholder="{{ 'general.search.search' | t }}"
+                {%- if section.settings.predictive_search_enabled -%}
+                role="combobox"
+                aria-expanded="false"
+                aria-owns="predictive-search-results"
+                aria-controls="predictive-search-results"
+                aria-haspopup="listbox"
+                aria-autocomplete="list"
+                autocorrect="off"
+                autocomplete="off"
+                autocapitalize="off"
+                spellcheck="false"
+                {%- endif -%} />
+              <label for="nav-search" class="sr-only">Search site</label>
+            </div>
+
+            {%- if section.settings.predictive_search_enabled -%}
+              <div
+                class="results"
+                tabindex="-1"
+                data-predictive-search></div>
+            {%- endif -%}
+          </form>
+        </div>
+
+        {% # Mobile and Desktop Navigation %}
+        <nav class="pt-2 md:pt-0 grid grid-cols-2 text-xs md:flex w-full">
+          {% for link in section.settings.main_linklist.links %}
+            <div class="py-3 pr-5 whitespace-nowrap">
+              {{ link.title }}
+            </div>
+          {% endfor %}
+        </nav>
+      </div>
+    </div>
+    <div class="flex md:w-auto flex-grow px-1.5">
+      <a href="/" class="w-full h-full flex items-center justify-center">
+        LOGO
+      </a>
+    </div>
+    <div class="md:w-2/5 flex items-center justify-end">
+      <div>
+        CART ACCOUNTS
+      </div>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+  {
+    "name": "Header",
+    "class": "header-section sticky top-0 left-0 z-10",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Header Section"
+      },
+      {
+        "type": "header",
+        "content": "Logo"
+      },
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo"
+      },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "label": "Logo Width",
+        "min": 50,
+        "max": 300,
+        "default": 125,
+        "step": 5,
+        "unit": "px"
+      }, {
+        "type": "header",
+        "content": "Navigation"
+      }, {
+        "type": "link_list",
+        "id": "main_linklist",
+        "label": "Main Menu (Navigation)"
+      }, {
+        "type": "checkbox",
+        "id": "predictive_search_enabled",
+        "label": "Enable Predictive Search",
+        "default": true
+      }
+    ]
+  }
+{% endschema %}

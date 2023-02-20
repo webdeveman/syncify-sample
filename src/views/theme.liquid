@@ -3,11 +3,12 @@
   <head>
 
     {% render 'head-meta-tags' %}
-    {% render 'style-tags', layout: 'theme' %}
-    {% render 'script-object-map' %}
 
     {{ content_for_header }}
+
     {% render 'script-tags', layout: 'theme' %}
+    {% render 'style-tags', layout: 'theme' %}
+    {% render 'script-object-map' %}
 
 
   </head>
@@ -20,17 +21,15 @@
     </a>
 
     {% # We give this an id because we define it in SPX targets. %}
-    <nav id="navbar">
     {% section 'layout-announcement-bar' %}
-    </nav>
+    {% section 'header' %}
 
     {% # We give this an id because we define it in SPX targets. %}
     <main
       id="main"
-      class="content-for-layout focus-none"
+      class="content-for-layout focus-none h-[200vh]"
       role="main"
       tabindex="-1">
-      Body
       {{ content_for_layout }}
     </main>
 

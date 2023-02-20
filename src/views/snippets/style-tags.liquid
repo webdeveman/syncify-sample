@@ -1,5 +1,18 @@
-{% # STYLESHEET PRELOADS %}
+{% # Theme CSS Variables %}
+<style>
+  html {
+    --pageBg: {{ settings.page_background }}
+    ;
+    --primaryColor: {{ settings.primary_color }}
+    ;
+    --accentOne: {{ settings.accent_color_1 }}
+    ;
+    --accentTwo: {{ settings.accent_color_2 }}
+    ;
+  }
+</style>
 
+{% # STYLESHEET PRELOADS %}
 <link
   as="style"
   crossorigin

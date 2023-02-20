@@ -6,6 +6,11 @@ import { ssm } from './utils';
 
 export function app ({ targets, screens, controllers }) {
 
+  if(window.Shopify.designMode) targets = ['body'];
+
+  // Log always runs and spx.supported returns true.
+  console.log('Spx Supported:', spx.supported, targets);
+
   spx.connect({
       targets,
       hover: {
@@ -13,6 +18,9 @@ export function app ({ targets, screens, controllers }) {
         threshold: 100
       }
   })(function(session) {
+
+    // Rarely see this log run.
+    console.log('Spx connected:', session);
 
    /**
      * Stimulus Instance

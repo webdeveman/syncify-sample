@@ -1,3 +1,6 @@
+import 'lazysizes';
+import 'lazysizes/plugins/unveilhooks/ls.unveilhooks'
+
 import { app } from 'application/app';
 import { Carousel } from 'components/carousel'
 import { Accordion } from 'components/accordion'
@@ -9,8 +12,8 @@ export default app({
    * on a per-page basis which SPX should invoke
    */
   targets: [
-    '#main',
-    '#navbar'
+    'body',
+    '#main'
   ],
 
   /**
