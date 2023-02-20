@@ -4,6 +4,7 @@ import 'lazysizes/plugins/unveilhooks/ls.unveilhooks'
 import { app } from 'application/app';
 import { Carousel } from 'components/carousel'
 import { Accordion } from 'components/accordion'
+import { Header } from 'components/header';
 
 export default app({
 
@@ -33,6 +34,7 @@ export default app({
    */
   controllers: {
     Accordion,
-    Carousel
+    Carousel,
+    Header,
   }
 });
