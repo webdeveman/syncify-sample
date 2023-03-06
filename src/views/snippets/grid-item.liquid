@@ -1,0 +1,40 @@
+{% comment %} 
+Skips will internally applied.
+
+Params:
+item {Product|Page|Collection} - Primarily Product.
+class {String} - Applied to container
+{% endcomment %}
+
+{% liquid
+    capture class
+        echo class
+        echo ' group relative pb-8'
+    endcapture
+%}
+
+{%- capture slides -%}
+  {%- for media in item.media -%}
+    <div class="w-full embla-slide">
+      {% if media.media_type == 'image' %}
+        {% render 'responsive-image' with image: media %}
+      {% else %}
+        Video
+      {% endif %}
+    </div>
+  {%- endfor -%}
+{%- endcapture -%}
+
+<div class="{{ class }}" data-aos="fade-up">
+  <div class="w-full pad-aspect-square relative">
+    <div class="absolute top-0 left-0 right-0 bottom-0 w-full h-full">
+      <a href="{{ item.url }}">
+        {% render 'embla-carousel' with slides: slides %}
+      </a>
+    </div>
+  </div>
+  <div class="mt-2 border-t border-black flex flex-col items-start justify-start relative">
+    <a href="{{ item.url }}" class="pseudo-link mt-2 text-sm">{{ item.title }}</a>
+    <span class="text-xs opacity-0 group-hover:opacity-100 transition">{{ item.price | money_without_trailing_zeros }}</span>
+  </div>
+</div>

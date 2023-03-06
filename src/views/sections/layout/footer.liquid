@@ -1,0 +1,219 @@
+<div class="w-full pt-16 page-pad" style="background-color: {{ section.settings.backgroundColor }}">
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+    {% for block in section.blocks %}
+      <div class="footer-block p-5 text-center flex flex-col items-center justify-start">
+        <div class="w-[40px] pb-3">
+          {% render 'responsive-image' with image: block.settings.image, class: block.settings.animation %}
+        </div>
+        <p class="font-medium tracking-wider text-sm pb-2">{{ block.settings.title }}</p>
+        {% case block.type %}
+          {% when 'linklist' %}
+          <ul class="text-xs space-y-1">
+            {% for link in block.settings.menu.links %}
+              <li>
+                <a href="{{ link.url }}">{{ link.title }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+          {% when 'content' %}
+          <div class="text-xs">{{ block.settings.content }}</div>
+          {% when 'social' %}
+        {% endcase %}
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Footer",
+    "class": "footer",
+    "tag": "footer",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Layout"
+      }, {
+        "type": "color",
+        "id": "backgroundColor",
+        "label": "Background Color"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "linklist",
+        "name": "Links",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Image"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "select",
+            "id": "animation",
+            "label": "Icon Animation",
+            "options": [
+              {
+                "value": "none",
+                "label": "None"
+              }, {
+                "value": "animate-spin-reverse",
+                "label": "Spin"
+              }, {
+                "value": "animate-tilt",
+                "label": "Tilt"
+              }
+            ],
+            "default": "none"
+          },
+          {
+            "type": "header",
+            "content": "Content"
+          }, {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          }, {
+            "type": "link_list",
+            "id": "menu",
+            "label": "Menu"
+          }
+        ]
+      }, {
+        "type": "content",
+        "name": "Content",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Image"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "select",
+            "id": "animation",
+            "label": "Icon Animation",
+            "options": [
+              {
+                "value": "none",
+                "label": "None"
+              }, {
+                "value": "animate-spin-reverse",
+                "label": "Spin"
+              }, {
+                "value": "animate-tilt",
+                "label": "Tilt"
+              }
+            ],
+            "default": "none"
+          },
+          {
+            "type": "header",
+            "content": "Content"
+          }, {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          }, {
+            "type": "richtext",
+            "id": "content",
+            "label": "Content"
+          }
+        ]
+      }, {
+        "type": "newsletter",
+        "name": "Newsletter",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Image"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "select",
+            "id": "animation",
+            "label": "Icon Animation",
+            "options": [
+              {
+                "value": "none",
+                "label": "None"
+              }, {
+                "value": "animate-spin-reverse",
+                "label": "Spin"
+              }, {
+                "value": "animate-tilt",
+                "label": "Tilt"
+              }
+            ],
+            "default": "none"
+          },
+          {
+            "type": "header",
+            "content": "Content"
+          }, {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          }, {
+            "type": "richtext",
+            "id": "content",
+            "label": "Content"
+          }
+        ]
+      }, {
+        "type": "social",
+        "name": "Social",
+        "settings": [
+
+          {
+            "type": "header",
+            "content": "Image"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "select",
+            "id": "animation",
+            "label": "Icon Animation",
+            "options": [
+              {
+                "value": "none",
+                "label": "None"
+              }, {
+                "value": "animate-spin-reverse",
+                "label": "Spin"
+              }, {
+                "value": "animate-tilt",
+                "label": "Tilt"
+              }
+            ],
+            "default": "none"
+          },
+          {
+            "type": "header",
+            "content": "Content"
+          }, {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

@@ -35,4 +35,10 @@ export class Controller extends BaseController {
 
   }
 
+
+  /* -------------------------------------------- */
+  /* TYPES                                        */
+  /* -------------------------------------------- */
+  stimulus: any;
+
 }

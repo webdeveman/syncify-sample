@@ -1,0 +1,10 @@
+{% layout none %}
+<div id="addon-container">
+  {% for addon in product.selected_variant.metafields.wip.addons.value %}
+    {% case addon.system.type %}
+      {% when 'engraving' %}
+      {% render 'product-addons-engraving' with engraving: addon, form_id: form_id %}
+
+    {% endcase %}
+  {% endfor %}
+</div>

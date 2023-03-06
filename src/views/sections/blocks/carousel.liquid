@@ -1,14 +1,14 @@
 {% comment %}
-The carousel breakpoint is used to initialise the carousel
-only when those screen sizes are detected. This allows us to
-convert the images to a carousel in mobile and tablet but not
-in desktop. The resize@window->caoursel#screen is what we will
-use to listen for changes and when the screen matches the media-query
-ids we assigned in the bundle.ts (`app({ })`) function at runtime
-matches, then the carousel will activate.
+  The carousel breakpoint is used to initialise the carousel
+  only when those screen sizes are detected. This allows us to
+  convert the images to a carousel in mobile and tablet but not
+  in desktop. The resize@window->caoursel#screen is what we will
+  use to listen for changes and when the screen matches the media-query
+  ids we assigned in the bundle.ts (`app({ })`) function at runtime
+  matches, then the carousel will activate.
 
-Remove the data-action and data-carousel-breakpoint-value attributes
-to disable this behaviour and have the carousel render in all screens.
+  Remove the data-action and data-carousel-breakpoint-value attributes
+  to disable this behaviour and have the carousel render in all screens.
 {% endcomment %}
 {% capture slides %}
 
@@ -16,9 +16,9 @@ to disable this behaviour and have the carousel render in all screens.
     {%- case block.type -%}
       {%- when 'image' -%}
       <div class="w-full embla-slide">
-        Image
         <a href="{{ block.settings.href }}">
-          <img src="{{ block.settings.image | format: 'pjpg' }}">
+          {% render 'responsive-image' image: block.settings.image, focal: true, primary: true, widths: '360,460,700,900,1200,1500,1800,2000' %}
+          {% comment %} <img src="{{ block.settings.image | format: 'pjpg' }}"> {% endcomment %}
         </a>
       </div>
       {%- when 'video' -%}
@@ -26,7 +26,7 @@ to disable this behaviour and have the carousel render in all screens.
         {%- liquid
           assign video = block.settings.video 
           assign source = video.sources | first
-          
+      
           capture attributes
             if block.settings.autoplay
               echo 'autoplay muted '
@@ -61,7 +61,7 @@ to disable this behaviour and have the carousel render in all screens.
 
 {% endcapture %}
 
-{% render 'embla-carousel' with slides: slides %}
+{% render 'embla-carousel' with slides: slides, containScroll: 'trimSnaps' %}
 
 
 {% schema %}

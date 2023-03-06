@@ -1,0 +1,42 @@
+{% comment %}
+  Props
+  form_id {String}
+  section {Liquid Section Object}
+  product {Liquid Product Object}
+
+{% endcomment %}
+
+<div class="w-full space-y-3" data-product-form-options>
+  {% for option in product.options_with_values %}
+    {% liquid
+    capture dropdown
+      echo 'dd-select mx-auto'
+      if option.values.size < 2
+        echo ' hidden'
+      endif
+    endcapture
+    %}
+    <div
+      data-controller="dropdown"
+      data-action="select->product#handleOptionSelect"
+      class="{{ dropdown }}">
+      <p class="mb-1 font-chronicle">{{ option.name }}</p>
+      <button data-dropdown-target="button" type="button">Make a Selection</button>
+
+      <fieldset id="options" data-dropdown-target="options">
+        <legend class="sr-only">{{ option.name }}</legend>
+        {% for value in option.values %}
+          <label for="{{ value | handle }}-{{ form_id }}-{{ option.position }}">{{ value }}</label>
+          <input
+            id="{{ value | handle }}-{{ form_id }}-{{ option.position }}"
+            value="{{ value }}"
+            form="{{ form_id }}"
+            name="options[{{ option.name | escape }}]"
+            data-position="option{{ option.position }}"
+            data-dropdown-target="option"
+            type="radio">
+        {% endfor %}
+      </fieldset>
+    </div>
+  {% endfor %}
+</div>

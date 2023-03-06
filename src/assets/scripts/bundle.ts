@@ -1,21 +1,30 @@
-import 'lazysizes';
-import 'lazysizes/plugins/unveilhooks/ls.unveilhooks'
-
 import { app } from 'application/app';
-import { Carousel } from 'components/carousel'
+
+// Stimulus Controllers
 import { Accordion } from 'components/accordion'
+import { Carousel } from 'components/carousel'
+import { Drawer } from 'components/drawer';
+import { Dropdown } from 'components/dropdown';
 import { Header } from 'components/header';
+import { ItemQuantity } from 'components/item-quantity';
+import { Modal } from 'components/modal';
+import { Pagination } from 'components/pagination';
+import { Product } from 'components/product-form';
+import { CartForm } from 'components/cart-form'
+import { Section } from 'components/section';
+import { Zoom } from 'components/zoom';
+
 
 export default app({
-
   /**
    * Small wrapped for defining target which will change
    * on a per-page basis which SPX should invoke
    */
-  targets: [
-    'body',
+  targets: [ 
+    '#shopify-section-header',
     '#main'
   ],
+
 
   /**
    * This allows us to define different viewports and apply
@@ -34,7 +43,16 @@ export default app({
    */
   controllers: {
     Accordion,
+    CartForm,
     Carousel,
+    Drawer,
+    Dropdown,
     Header,
+    ItemQuantity,
+    Modal,
+    Pagination, 
+    Product,
+    Section,
+    Zoom,
   }
 });

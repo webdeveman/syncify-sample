@@ -1,0 +1,38 @@
+{% comment %} 
+Props: 
+Paginate {Shopify Object}
+target {Html Selector as String}
+items {Html Selector as String}
+
+{% endcomment %}
+
+{% liquid
+    assign target = target | default: 'false'
+%}
+
+{% if paginate.parts.size > 0 %}
+  <div
+    data-controller="pagination"
+    class="pagination"
+    data-pagination-container-value="{{ target }}">
+    <nav role="navigation" aria-label="Pagination">
+      <ul class="flex space-x-3 w-full items-center justify-center" role="list">
+        {% if paginate.previous %}
+          <li>
+            <a href="{{ paginate.previous.url }}">Previous</a>
+          </li>
+        {% endif %}
+        {% for part in paginate.parts %}
+          <li>
+            <a href="{{ part.url }}">{{ part.title }}</a>
+          </li>
+        {% endfor %}
+        {% if paginate.next %}
+          <li>
+            <a class="next" href="{{ paginate.next.url }}">Next</a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+{% endif %}

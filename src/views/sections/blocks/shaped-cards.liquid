@@ -1,0 +1,129 @@
+<div class="py-10 page-pad">
+  <div class="flex flex-wrap justify-center md:space-x-10">
+    {% for block in section.blocks %}
+      {%-  liquid 
+            capture shapeClasses
+                echo 'w-full '
+                echo block.settings.shape | append: ' '
+            endcapture
+
+            capture borderClasses
+                echo 'border-[10px] w-full '
+                echo block.settings.border
+                if block.settings.shape == 'pad-aspect-circle'
+                    echo ' rounded-full'
+                endif
+            endcapture
+        -%}
+      <div class="flex-[0_0_275px] pb-8 relative">
+        <div class="{{ borderClasses }}" {% if block.settings.border == 'custom' %}style="border-color: {{ block.settings.border_color }}"{% endif %}>
+          <div class="{{ shapeClasses }}">
+            {% render 'responsive-image' with image: block.settings.image, wrapper: 'absolute top-0 left-0 bottom-0 right-0', focal: true %}
+          </div>
+        </div>
+        <div class="w-full pt-2 text-center">
+          <p class="font-chronicle text-2xl mb-2">{{ block.settings.title }}</p>
+          <a href="{{ block.settings.url }}" class="pseudo-link tracking-widest">{{ block.settings.cta }}</a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Shaped Cards",
+    "tag": "section",
+    "class": "shaped-cards w-full shopify-section",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Shaped Cards"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "card",
+        "name": "Card",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Card"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "header",
+            "content": "Border"
+          },
+          {
+            "type": "select",
+            "id": "shape",
+            "label": "Shape",
+            "options": [
+              {
+                "value": "pad-aspect-square",
+                "label": "Square"
+              }, {
+                "value": "pad-aspect-video",
+                "label": "16 / 9 Ratio (Video)"
+              }, {
+                "value": "pad-aspect-circle",
+                "label": "Circle"
+              }
+            ],
+            "default": "pad-aspect-square"
+          }, {
+            "type": "select",
+            "id": "border",
+            "label": "Border Color Setting",
+            "options": [
+              {
+                "value": "border-primary",
+                "label": "Primary"
+              }, {
+                "value": "border-accent",
+                "label": "Accent"
+              }, {
+                "value": "border-accentTwo",
+                "label": "Accent Two"
+              }, {
+                "value": "custom",
+                "label": "Custom"
+              }
+            ],
+            "default": "border-primary",
+            "info": "To use the setting below, select 'custom'."
+          }, {
+            "type": "color",
+            "id": "border_color",
+            "label": "Border Color"
+          }, {
+            "type": "header",
+            "content": "Copy"
+          }, {
+            "type": "textarea",
+            "id": "title",
+            "label": "Title"
+          }, {
+            "type": "text",
+            "id": "cta",
+            "label": "Call to Action"
+          }, {
+            "type": "url",
+            "id": "url",
+            "label": "URL"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Shaped Cards"
+      }
+    ]
+  }
+{% endschema %}

@@ -1,18 +1,30 @@
 import { Controller } from '@hotwired/stimulus';
 import embla, { EmblaCarouselType } from 'embla-carousel';
 import * as vp from 'qvp';
+import { parseScriptTag } from 'application/utils';
 
 /* -------------------------------------------- */
 /* CLASS                                        */
 /* -------------------------------------------- */
 
 export class Carousel extends Controller {
-
   /**
    * Stimulus Values
    */
   static values = {
+    align: {
+      type: String,
+      default: 'start'
+    },
+    axis: {
+      type: String,
+      default: 'x'
+    },
     breakpoint: String,
+    breakpointSettings: {
+      type: Object,
+      default: {}
+    },
     dragFree: {
       type: Boolean,
       default: true
@@ -20,6 +32,10 @@ export class Carousel extends Controller {
     draggable: {
       type: Boolean,
       default: true
+    },
+    highlight: {
+      type: Boolean,
+      default: false
     },
     loop: {
       type: Boolean,
@@ -46,23 +62,41 @@ export class Carousel extends Controller {
   /**
    * Stimulus Targets
    */
-  static targets = [];
+  static targets = ['breakpoints'];
+
+  /**
+   * Stimulus Outlets
+   */
+  static outlets = ['carousel'];
+
+  syncControllers() {
+    const pair = this.carouselOutlet.carousel;
+    const thumbSlides = pair.slideNodes();
+    
+    thumbSlides.forEach((slideNode, index) => {
+      slideNode.addEventListener('click',() => {
+        this.carousel.scrollTo(index);
+      })
+    })
+
+    this.carousel.on('select', () => {
+      pair.scrollTo(
+        this.carousel.selectedScrollSnap()
+      )
+    })
+  }
 
   /**
    * Stimulus Initialize
    */
   public initialize () {
-
     this.active = false;
-
   }
 
   /**
    * Stimulus Connect
    */
   public connect () {
-
-    // console.log('Carousel Stimulus Connect');
     if (this.enabled && !this.active) this.screen();
 
   }
@@ -71,9 +105,7 @@ export class Carousel extends Controller {
    * Stimulus Disconnect
    */
   public disconnect () {
-
     if (this.active && this.enabled) this.carousel.destroy();
-
   }
 
   /**
@@ -81,6 +113,29 @@ export class Carousel extends Controller {
    */
   get enabled () {
     return this.hasBreakpointValue ? vp.test(this.breakpointValue, '|') : true;
+  }
+
+  updateInView() {
+    const $slides = this.carousel.slideNodes();
+    const inView = this.carousel.slidesInView();
+
+    for(let i = 0; i < $slides.length; i++) {
+      let $slide = $slides[i];
+      let position = inView.indexOf(i);
+
+      // clean.
+      $slide.classList.remove('edge');
+
+      if(position === 0 || position === inView.length - 1) $slide.classList.add('edge');
+
+      if(inView.includes(i)) {
+        $slide.classList.add('embla-active')
+        $slide.classList.remove('embla-inactive')
+      } else {
+        $slide.classList.remove('embla-active')
+        $slide.classList.add('embla-inactive')
+      }
+    }
   }
 
   /**
@@ -91,9 +146,19 @@ export class Carousel extends Controller {
 
     if (!this.active && this.enabled) {
 
+      if(this.hasBreakpointsTarget) {
+        const { breakpoints } = parseScriptTag(this.breakpointsTarget);
+        this.breakpointsTarget.parentElement.removeChild(this.breakpointsTarget);
+        this.breakpointSettingsValue = breakpoints;
+      }
+
+      // console.log('Carousel Screen:', breakpoints, this.breakpointSettingsValue);
+
       this.active = true;
       this.carousel = embla(this.element as HTMLElement, {
-        align: 'start',
+        align: this.alignValue,
+        axis: this.axisValue,
+        breakpoints: this.breakpointSettingsValue,
         draggable: this.draggableValue,
         dragFree: this.dragFreeValue,
         skipSnaps: this.skipSnapsValue,
@@ -102,6 +167,15 @@ export class Carousel extends Controller {
         startIndex: this.startIndexValue,
         loop: this.loopValue
       });
+      
+
+      if(this.hasCarouselOutlet) {
+        this.syncControllers();
+      }
+
+      this.carousel.on('init', this.updateInView.bind(this))
+      this.carousel.on('settle', this.updateInView.bind(this))
+      this.carousel.on('scroll', this.updateInView.bind(this))
 
     } else if (this.active && !this.enabled) {
       this.carousel.destroy();
@@ -114,7 +188,7 @@ export class Carousel extends Controller {
    * Carousel - Next
    */
   public next () {
-
+    // console.log('Next');
     this.carousel.scrollNext();
 
   }
@@ -123,7 +197,7 @@ export class Carousel extends Controller {
    * Carousel - Previous
    */
   public prev () {
-
+    // console.log('Prev');
     this.carousel.scrollPrev();
 
   }
@@ -147,6 +221,8 @@ export class Carousel extends Controller {
    * Photoswipe: Template Element
    */
   template: Element;
+  carouselOutlet: HTMLElement | null;
+
   /**
    * Carousel Instance
    */
@@ -159,15 +235,38 @@ export class Carousel extends Controller {
   /* -------------------------------------------- */
   /* STIMULUS VALUES                              */
   /* -------------------------------------------- */
+  breakpointsTarget: HTMLElement | null;
+  hasCarouselOutlet: boolean;
+  hasBreakpointsTarget: boolean;
+
+  /**
+   * Stimulus: Axis for carousel
+   */
+  axisValue: string;
 
   /**
    * Stimulus: The screen size at which to apply carousel
    */
   breakpointValue: string;
+
+  /**
+   * Stimulus: The screen size at which to apply carousel
+   */
+  breakpointSettingsValue: object;
+
   /**
    * Stimulus: Whether or not a breakpoint size was provided, when `false` runs in any breakpoint.
    */
   hasBreakpointValue: boolean;
+  /**
+   * Embla carousel `draggable` option.
+   */
+  alignValue: string;
+  /**
+   * Custom Embla carousel `draggable` option.
+   */
+  highlightValue: boolean;
+
   /**
    * Embla carousel `draggable` option.
    */

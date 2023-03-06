@@ -1,22 +1,81 @@
 {%- liquid 
-
-
     capture itemClasses
-        echo 'md:col-start-4 md:col-span-3 md:row-start-1 md:row-span-2|'
-        echo 'md:col-start-1 md:col-span-3 md:row-start-2 md:row-span-3|'
-        echo 'md:col-start-4 md:col-span-3 md:row-start-4 md:row-span-3|'
-        echo 'md:col-start-1 md:col-span-3 md:row-start-6 md:row-span-2'
+        echo 'md:pl-10 md:pb-20 [&_.item-container]:flex [&_.item-container]:flex-col-reverse [&_.item-container]:md:flex-col [&_.item-container]:justify-center [&_.item-container]:md:items-start |'
+        echo '[&_.item-container]:flex [&_.item-container]:flex-col-reverse [&_.item-container]:md:flex-row-reverse [&_.item-container]:items-center [&_.item-container]:justify-start md:pr-[15%] [&_.item-container]:md:space-x-5 |'
+        echo '[&_.item-container]:flex [&_.item-container]:flex-col-reverse [&_.item-container]:md:flex-row [&_.item-container]:items-center [&_.item-container]:justify-end md:pl-10 md:pb-20 [&_.item-container]:md:space-x-5 |'
+        echo '[&_.item-container]:flex [&_.item-container]:flex-col-reverse [&_.item-container]:items-center  [&_.item-container]:justify-center [&_.item-container]:md:items-start [&_.item-container]:md:justify-start md:pr-10 |'
+
     endcapture
 
     assign itemClasses = itemClasses | split: '|'
 -%}
 
 <div class="w-full py-10 page-pad text-center">
-  <div class="grid grid-cols-6 grid-rows-[repeat(7,1fr)] gap-x-10" data-grid>
-    {% for block in section.blocks %}
-      <div class="{{ itemClasses[forloop.index0] }} bg-gray-400">Item</div>
-    {% endfor %}
+  <div class="grid md:grid-cols-2 gap-5 px-6 md:px-0">
+    <div class="column md:col-start-2 space-y-4 md:space-y-0">
+      {%-  liquid 
+        assign half = section.blocks.size | divided_by: 2 | floor 
+      -%}
+
+      {% for i in (0..half) %}
+        {%- liquid
+          if forloop.last
+            continue
+          endif
+
+          assign block = section.blocks[i]
+        -%}
+        <div class="{{ itemClasses[i] }} relative">
+          <div class="relative item-container">
+            <div class="text-center md:text-left flex flex-col items-center justify-center md:items-start md:justify-start py-4 md:pl-5">
+              {% if block.settings.url %}
+                <a href="{{ block.settings.url }}" class="pseudo-link">
+                  <span class="font-chronicle font-semibold text-3xl">{{ block.settings.title }}</span>
+                </a>
+              {% else %}
+                <span class="font-chronicle font-semibold">{{ block.settings.title }}</span>
+              {% endif %}
+              <span class="whitespace-nowrap text-xs">{{ block.settings.cta }}</span>
+            </div>
+            {% if block.settings.image %}
+              {% render 'responsive-image' with image: block.settings.image, widths: '100,200,300,400' %}
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="column md:col-start-1 md:row-start-1 space-y-4 md:space-y-0">
+      {% for i in (half..section.blocks.size) %}
+        {%- liquid
+          if forloop.last
+            continue
+          endif
+
+          assign block = section.blocks[i]
+        -%}
+        <div class="{{ itemClasses[i] }} relative">
+          <div class="relative item-container">
+            <div class="text-center md:text-left flex flex-col items-center justify-center md:items-start md:justify-start py-4 pl-5">
+              {% if block.settings.url %}
+                <a href="{{ block.settings.url }}" class="pseudo-link">
+                  <span class="font-chronicle font-semibold text-3xl">{{ block.settings.title }}</span>
+                </a>
+              {% else %}
+                <span class="font-chronicle font-semibold">{{ block.settings.title }}</span>
+              {% endif %}
+              <span class="whitespace-nowrap text-xs">{{ block.settings.cta }}</span>
+            </div>
+            {% if block.settings.image %}
+              {% render 'responsive-image' with image: block.settings.image, widths: '100,200,300,400' %}
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
   </div>
+
 </div>
 
 {% schema %}
@@ -39,6 +98,28 @@
           {
             "type": "header",
             "content": "Collage Item"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "textarea",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "header",
+            "content": "CTA"
+          }, {
+            "type": "text",
+            "id": "cta",
+            "label": "Call To Action"
+          }, {
+            "type": "url",
+            "id": "url",
+            "label": "URL"
           }
         ]
       }

@@ -1,0 +1,111 @@
+<div class="{% if section.settings.pad == 'page-pad' %} page-pad py-5{% endif %}">
+  <div class="w-full relative">
+    {% render 'responsive-image' with image: section.settings.image, focal: true %}
+    <div class="absolute top-0 left-0 bottom-0 right-0 w-full h-full {{ section.settings.content_position }}" style="color: {{ section.settings.textColor }};">
+      <div class="w-auto p-8 relative">
+        <h3 class="text-3xl mb-2">{{ section.settings.title }}</h3>
+        <a href="{{ section.settings.url }}" class="text-sm tracking-wide pseudo-link">{{ section.settings.cta }}</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Image Banner",
+    "tag": "section",
+    "class": "shopify-section w-full",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Layout"
+      },
+      {
+        "type": "select",
+        "id": "pad",
+        "label": "Padding",
+        "options": [
+          {
+            "value": "none",
+            "label": "No Padding"
+          }, {
+            "value": "page-pad",
+            "label": "Pad"
+          }
+        ],
+        "default": "none"
+      },
+      {
+        "type": "select",
+        "id": "content_position",
+        "label": "Content Position",
+        "options": [
+          {
+            "value": "flex-start-start",
+            "label": "Top Left"
+          },
+          {
+            "value": "flex-start-center",
+            "label": "Top Center"
+          },
+          {
+            "value": "flex-start-end",
+            "label": "Top Right"
+          },
+          {
+            "value": "flex-center-start",
+            "label": "Middle Left"
+          }, {
+            "value": "flex-center-center",
+            "label": "Middle Center"
+          }, {
+            "value": "flex-center-end",
+            "label": "Middle Right"
+          }, {
+            "value": "flex-end-start",
+            "label": "Bottom Left"
+          }, {
+            "value": "flex-end-center",
+            "label": "Bottom Center"
+          }, {
+            "value": "flex-end-end",
+            "label": "Bottom Right"
+          }
+        ],
+        "default": "flex-start-start"
+      },
+      {
+        "type": "color",
+        "id": "textColor",
+        "label": "Text Color"
+      }, {
+        "type": "header",
+        "content": "Image"
+      }, {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      }, {
+        "type": "header",
+        "content": "Content"
+      }, {
+        "type": "textarea",
+        "id": "title",
+        "label": "Title"
+      }, {
+        "type": "text",
+        "id": "cta",
+        "label": "Call To Action"
+      }, {
+        "type": "url",
+        "id": "url",
+        "label": "Url"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Image Banner"
+      }
+    ]
+  }
+{% endschema %}

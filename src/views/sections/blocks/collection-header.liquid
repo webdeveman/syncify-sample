@@ -1,0 +1,35 @@
+<div class="page-pad flex pb-10">
+  {% if collection.image %}
+    <div class="w-full md:w-1/3 flex" data-aos="fade-right">
+      {% render 'responsive-image' with image: collection.image, focal: true %}
+    </div>
+  {% endif %}
+  <div class="pl-5 w-full md:w-2/3 flex flex-col justify-center items-start" data-aos="fade-left">
+    <h1 class="font-chronicle text-3xl mb-4">{{ collection.title }}</h1>
+    <div class="text-sm text-accent [&_a]:text-black rte">
+      {{ collection.description }}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Collection Header",
+    "tag": "section",
+    "class": "shopify-section",
+    "presets": [
+      {
+        "name": "Collection Header"
+      }
+    ],
+    "settings": [
+      {
+        "type": "header",
+        "content": "Collection Header"
+      }, {
+        "type": "paragraph",
+        "content": "This section is built entirely from the collection data. There are no additional settings here."
+      }
+    ]
+  }
+{% endschema %}

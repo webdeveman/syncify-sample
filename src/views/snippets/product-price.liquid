@@ -1,0 +1,12 @@
+<div
+  class="no-js-hidden"
+  id="price-{{ section.id }}"
+  role="status"
+  data-product-target="prices"
+  data-price>
+  {% if product.price_varies %}
+    <span>{{ product.price_min | money_without_trailing_zeros }} - {{ product.price_max | money_without_trailing_zeros }}</span>
+  {% else %}
+    <span>{{ product.price | money_without_trailing_zeros }}</span>
+  {% endif %}
+</div>

@@ -1,0 +1,8 @@
+{
+    "sections": {
+        "main": {
+            "type": "blocks-boxed-feed"
+        }
+    },
+    "order": ["main"]
+}

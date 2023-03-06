@@ -11,7 +11,8 @@ export default defineConfig({
   stores: {
     domain: 'emanwebdev',
     themes: {
-      dev: 139624349983
+      prod: 144649388319,
+      // dev: 139624349983,
     }
   },
   hot: {
@@ -31,7 +32,7 @@ export default defineConfig({
   paths: {
     assets: [
       'assets/images/*',
-      'assets/fonts/*'
+      'assets/fonts/**/*'
     ],
     customers: 'views/customer/*',
     config: 'data/settings/*',
@@ -48,8 +49,9 @@ export default defineConfig({
   transforms: {
     script: {
       'assets/bundle.min.js': 'assets/scripts/bundle.ts',
+      'assets/theme.min.js': 'assets/scripts/theme.ts',
       // If you uncomment this, the syncify will warn on inputs in use.
-      //'assets/[dir]-[file].js': 'assets/scripts/components/*'
+      // 'assets/component-[dir]-[file].js': 'assets/scripts/lazy/*'
     },
     svg: {
       // You don't need this for now
@@ -77,7 +79,10 @@ export default defineConfig({
       prefixDir: true,
       separator: '-',
       global: [
-        'header'
+        'cart-drawer',
+        'header',
+        'main-product',
+        'footer'
       ]
     },
     pages: {
@@ -86,6 +91,9 @@ export default defineConfig({
     }
   },
   spawn: {
+    build: {
+      tailwind: 'pnpx tailwindcss -i ./src/assets/styles/base.css -o ./src/assets/styles/tailwind.css',
+    },
     watch: {
       tailwind: 'pnpx tailwindcss -i ./src/assets/styles/base.css -o ./src/assets/styles/tailwind.css --watch',
     }

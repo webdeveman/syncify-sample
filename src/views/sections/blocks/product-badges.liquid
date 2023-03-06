@@ -1,0 +1,142 @@
+{% comment %} Should only be used on a product template. {% endcomment %}
+{% liquid
+    assign productTags = product.tags | join: ',' | downcase
+    assign tags = product.tags
+
+%}
+{% capture slides %}
+  {% for block in section.blocks %}
+    {% case block.settings.match %}
+      {% when 'exact' %}
+      {% if tags contains block.settings.title %}
+        <div class="relative w-1/3 md:w-1/5 embla-slide">
+          {% liquid
+                if block.settings.image != blank
+                render 'responsive-image' with image: block.settings.image, focus: true
+                endif
+            %}
+          <div style="color: {{ block.settings.textColor }}" class="absolute top-0 left-0 bottom-0 right-0 flex items-center justify-center">
+            <p>{{ block.settings.message }}</p>
+          </div>
+        </div>
+      {% endif %}
+      {% when 'unless' %}
+      {% unless tags contains block.settings.title %}
+        <div class="relative w-1/3 md:w-1/5 embla-slide">
+          {% liquid
+              if block.settings.image != blank
+                render 'responsive-image' with image: block.settings.image, focus: true
+              endif
+          %}
+          <div style="color: {{ block.settings.textColor }}" class="absolute top-0 left-0 bottom-0 right-0 flex items-center justify-center">
+            <p>{{ block.settings.message }}</p>
+          </div>
+        </div>
+      {% endunless %}
+      {% when 'contains' %}
+      {% if productTags contains block.settings.title %}
+        <div class="relative w-1/3 md:w-1/5 embla-slide">
+          {% liquid
+              if block.settings.image != blank
+              render 'responsive-image' with image: block.settings.image, focus: true
+              endif
+          %}
+          <div style="color: {{ block.settings.textColor }}" class="absolute top-0 left-0 bottom-0 right-0 flex items-center justify-center">
+            <p>{{ block.settings.message }}</p>
+          </div>
+        </div>
+      {% endif %}
+    {% endcase %}
+  {% endfor %}
+
+  {% for tag in tags %}
+    {% assign tag = tag | downcase %}
+    {% if tag contains 'custom' %}
+      {% assign label = tag | split: ':' | last %}
+      <div class="relative w-1/3 sm:w-1/4 lg:w-1/5 embla-slide">
+        <div class="text-white absolute top-0 left-0 bottom-0 right-0 flex items-center justify-center">
+          <p>{{ label }}</p>
+        </div>
+      </div>
+    {% endif %}
+  {% endfor %}
+{% endcapture %}
+
+<div class="page-pad py-10 text-xs" style="background-color: {{ section.settings.background }}">
+  {% render 'embla-carousel' with slides: slides, align: 'start', containScroll: 'trimSnaps' %}
+</div>
+
+{% schema %}
+  {
+    "name": "Product Badges",
+    "class": "shopify-section product-badges",
+    "presets": [
+      {
+        "name": "Product Badges"
+      }
+    ],
+    "templates": ["product"],
+    "settings": [
+      {
+        "type": "header",
+        "content": "Layout"
+      }, {
+        "type": "color",
+        "id": "background",
+        "label": "Background Color"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "badge",
+        "name": "Badge",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Trigger"
+          },
+          {
+            "type": "textarea",
+            "id": "message",
+            "label": "Message"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Tag Trigger"
+          },
+          {
+            "type": "select",
+            "id": "match",
+            "label": "Match Type",
+            "options": [
+              {
+                "value": "exact",
+                "label": "Exact Match"
+              }, {
+                "value": "contains",
+                "label": "Contains"
+              }, {
+                "value": "unless",
+                "label": "Does not contain"
+              }
+            ],
+            "default": "contains"
+          }, {
+            "type": "header",
+            "content": "Display"
+          }, {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Background Image"
+          }, {
+            "type": "color",
+            "id": "textColor",
+            "label": "Text Color",
+            "default": "#ffffff"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

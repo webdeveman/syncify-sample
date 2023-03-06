@@ -1,0 +1,64 @@
+{% comment %} 
+  Container snippet that will render addon components given a
+  product object.  
+
+  Metaobject liquid:
+  https://shopify.dev/docs/api/liquid/objects/metaobject
+
+  Props
+  product {Shopify Object} - required.
+{% endcomment %}
+
+<div class="w-full space-y-3" data-product-target="addons">
+  {% liquid
+    assign usedAddonHandles = ''
+  %}
+
+  {% for variant in product.variants %}
+    {% for addon in variant.metafields.wip.addons.value %}
+      {% liquid
+        assign handle = addon.system.handle
+        if usedAddonHandles contains handle
+          continue
+        endif
+
+        assign usedAddonHandles = usedAddonHandles | join: ',' | append: addon.system.handle | append: ','
+      %}
+
+      <div
+        style="display: none;"
+        data-product-target="addon"
+        data-aos="fade-up"
+        data-addon="{{ addon.system.handle }}">
+        {% case addon.system.type %}
+          {% when 'engraving' %}
+          {% render 'product-addons-engraving' with engraving: addon, form_id: form_id %}
+
+        {% endcase %}
+      </div>
+    {% endfor %}
+  {% endfor %}
+
+  <div>
+    {% for addon in product.metafields.wip.addons.value %}
+      {% liquid
+        assign handle = addon.system.handle
+        if usedAddonHandles contains handle
+          continue
+        endif
+
+        assign usedAddonHandles = usedAddonHandles | join: ',' | append: addon.system.handle | append: ','
+      %}
+
+      {% case addon.system.type %}
+
+        {% when 'engraving' %}
+        {% render 'product-addons-engraving' with engraving: addon, form_id: form_id %}
+
+        {% when 'chain' %}
+        {% render 'product-addons-chain' chain: addon, form_id: form_id %}
+
+      {% endcase %}
+    {% endfor %}
+  </div>
+</div>

@@ -6,7 +6,6 @@ import relapse, { Scope, Options } from 'relapse';
 /* -------------------------------------------- */
 
 export class Accordion extends Controller {
-
   /**
    * Stimulus: Values
    */

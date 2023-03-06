@@ -1,0 +1,26 @@
+{% comment %}
+This block renders using a metaobject of type collection feature.
+
+Params:
+item {Metaobject}
+class {String}
+{% endcomment %}
+
+{%-  liquid 
+    assign class = class | default: ''
+    assign item = item | default: blank
+
+    assign image = item.media_items.value | where: 'media_type', 'image' | first
+-%}
+
+<div class="{{ class }} relative flex" data-aos="fade-up">
+  {% if image %}
+    {% render 'responsive-image', with image: image, focal: true %}
+  {% endif %}
+  <div class="absolute top-0 left-0 right-0 bottom-0 bg-black/10 py-8 px-5 {{ item.content_placement | handle }}">
+    <div class="flex-col flex items-center justify-center text-center">
+      <h3 class="text-xl mb-2">{{ item.title }}</h3>
+      <a href="{{ item.url }}" class="pseudo-link border-black border py-1.5 px-2.5 font-semibold text-xs w-auto">{{ item.cta }}</a>
+    </div>
+  </div>
+</div>

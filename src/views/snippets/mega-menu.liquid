@@ -1,0 +1,38 @@
+<div class="hidden megamenu-container bg-white md:hidden md:group-hover:flex md:absolute md:left-0 md:top-full md:right-0 md:w-full md:mx-auto md:flex-wrap md:border-t md:border-white">
+  <div class="megamenu-wrapper md:w-full page-pad mx-auto flex flex-wrap justify-between  py-8 overflow-hidden text-left md:space-x-[.83%]">
+    {% for child_link in link.links %}
+      <div class="w-[15%] megamenu-item whitespace-pre-wrap md:animate-fade-slide text-left list-none mb-10 transition">
+        <div class="mega-item-image pt-[73.25%] relative overflow-hidden">
+          <a href="{{ child_link.url }}" class="absolute top-0 left-0 right-0 bottom-0 flex">
+            <img
+              src="{{ child_link.object.image | image_url: width: 1 }}"
+              data-src="{{ child_link.object.image | image_url: height: 350 }}"
+              height="105"
+              class="lazyload w-full object-cover" />
+          </a>
+        </div>
+        <a
+          href="{{ child_link.url }}"
+          class="category-main font-chronicle text-[18px] block pt-3 tracking-widest font-medium"
+          data-img="{{ child_link.object.image | image_url: height: 350 }}">
+          {{ child_link.title }}
+        </a>
+        {% if child_link.links != blank %}
+          <ul class="mt-3 megamenu-sublist">
+            {% for grand_link in child_link.links %}
+              <li class="megamenu-sublit__item m-0 uppercase block text-left p-0 tracking-tight font-light text-xs">
+                <a
+                  class="pt-1"
+                  data-action="mouseover->header#enterGrandChild mouseout->header#leaveGrandChild"
+                  href="{{ grand_link.url }}"
+                  {% if grand_link.object.image != blank %}
+                  data-img="{{ grand_link.object.image | image_url: height: 350 }}"
+                  {% endif %}>{{ grand_link.title }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</div>

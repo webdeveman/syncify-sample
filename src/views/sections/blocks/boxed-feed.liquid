@@ -1,0 +1,130 @@
+<div class="w-full p-5" style="background-color: {{ section.settings.background }}; color: {{ section.settings.text }};">
+
+  <div class="w-full border p-5 px-10" style="border-color: {{ section.settings.border }};">
+    <div class="w-full flex flex-col items-center justify-center md:flex-row md:items-end md:justify-start space-x-5 pb-3">
+      <h3 class="text-3xl font-chronicle">{{ section.settings.title }}</h3>
+      <a class="text-accent text-lg pb-0.5" href="{{ section.settings.url }}">{{ section.settings.cta }}</a>
+    </div>
+
+    <div class="w-full relative">
+      {% capture slides %}
+        {% for i in (0..15) %}
+          <div class="embla-slide w-full sm:w-1/2 md:w-1/4 bg-accent h-[150px] mr-5">
+            <p>{{ i }}</p>
+          </div>
+        {% endfor %}
+      {% endcapture %}
+
+      {% capture arrows %}
+        <button
+          type="button"
+          data-action="click->carousel#prev"
+          class="embla-arrow embla-prev-arrow bg-black w-[15px] h-[15px] absolute left-0 top-1/2 -translate-y-1/2"></button>
+        <button
+          type="button"
+          data-action="click->carousel#next"
+          class="embla-arrow embla__button--next embla-next-arrow bg-black w-[15px] h-[15px] absolute -right-5 top-1/2 -translate-y-1/2"></button>
+      {% endcapture %}
+
+      {% render 'embla-carousel'
+       with slides: slides, arrows: arrows, skipSnaps: false, loop: true, dragFree: true %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Boxed Feed",
+    "class": "shopify-section w-full",
+    "tag": "section",
+    "max_blocks": 1,
+    "settings": [
+      {
+        "type": "header",
+        "content": "Boxed Feed"
+      },
+      {
+        "type": "textarea",
+        "id": "title",
+        "label": "Title"
+      },
+      {
+        "type": "text",
+        "id": "cta",
+        "label": "Call To Action"
+      },
+      {
+        "type": "url",
+        "id": "url",
+        "label": "URL"
+      }, {
+        "type": "header",
+        "content": "Colors"
+      }, {
+        "type": "color",
+        "id": "background",
+        "label": "Background Color"
+      }, {
+        "type": "color",
+        "id": "border",
+        "label": "Border Color"
+      }, {
+        "type": "color",
+        "id": "textColor",
+        "label": "Text Color"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "blog",
+        "name": "Blog",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Blog Feed"
+          }, {
+            "type": "blog",
+            "id": "source",
+            "label": "Blog"
+          }, {
+            "type": "range",
+            "id": "limit",
+            "label": "Item Limit",
+            "unit": "itm",
+            "default": 50,
+            "step": 1,
+            "max": 50,
+            "min": 1
+          }
+        ]
+      }, {
+        "type": "collection",
+        "name": "Collection",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Collection Feed"
+          }, {
+            "type": "collection",
+            "id": "source",
+            "label": "Collection"
+          }, {
+            "type": "range",
+            "id": "limit",
+            "label": "Item Limit",
+            "unit": "itm",
+            "default": 50,
+            "step": 1,
+            "max": 50,
+            "min": 1
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Boxed Feed"
+      }
+    ]
+  }
+{% endschema %}

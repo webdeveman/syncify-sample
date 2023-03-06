@@ -3,6 +3,13 @@
   <head>
 
     {% render 'head-meta-tags' %}
+    {% # Temporary google fonts until I get syncify fonts build sorted. %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     {{ content_for_header }}
 
@@ -14,7 +21,7 @@
   </head>
 
 
-  <body class="">
+  <body class="font-sweet" style="font-family: 'Quicksand', sans-serif;">
 
     <a class="skip-to-content-link button sr-only" href="#MainContent">
       {{ "accessibility.skip_to_text" | t }}
@@ -22,16 +29,27 @@
 
     {% # We give this an id because we define it in SPX targets. %}
     {% section 'layout-announcement-bar' %}
-    {% section 'header' %} 
+    {% section 'header' %}
+    {% section 'cart-drawer' %}
 
     {% # We give this an id because we define it in SPX targets. %}
+    {%- liquid
+      capture mainClasses
+        echo 'relative content-for-layout focus-none z-10 shadowl-lg '
+        unless template.name == 'index'
+          echo 'pt-20'
+        endunless
+      endcapture
+    -%}
     <main
       id="main"
-      class="content-for-layout focus-none h-[200vh]"
+      class="{{ mainClasses }}"
       role="main"
       tabindex="-1">
       {{ content_for_layout }}
     </main>
+
+    {% section 'footer' %}
 
     {% comment %}a11y compliance{% endcomment %}
     <ul hidden>

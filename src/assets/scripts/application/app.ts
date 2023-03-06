@@ -6,10 +6,9 @@ import { ssm } from './utils';
 
 export function app ({ targets, screens, controllers }) {
 
+  console.log('App:', window.Shopify.designMode);
+  
   if(window.Shopify.designMode) targets = ['body'];
-
-  // Log always runs and spx.supported returns true.
-  console.log('Spx Supported:', spx.supported, targets);
 
   spx.connect({
       targets,
@@ -35,15 +34,11 @@ export function app ({ targets, screens, controllers }) {
   });
 
   spx.on('prefetch', (state) => {
-
     console.log('THIS WILL INVOKE FOR EVERY PREFETCH', state)
-
   })
 
   spx.on('load', (state) => {
-
-    console.log('THIS IS SPX STATE:', state)
-
+    console.log('THIS IS SPX LOAD STATE:', state)
   })
 
 }

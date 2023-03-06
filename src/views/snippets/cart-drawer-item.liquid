@@ -1,0 +1,92 @@
+{% liquid
+    assign isAddon = false
+    assign isMain = false
+    assign transactionId = blank
+    assign properties = blank
+
+    for property in item.properties
+      assign firstLetter = property.first | first
+
+      if firstLetter == '_'
+            if property.first == '_addon' and property.last == 'true'
+                assign isAddon = true
+            endif
+            if property.first == '_parent' and property.last == 'true'
+                assign isMain = true
+            endif
+            if property.first == '_bundle'
+                assign transactionId = property.last
+            endif
+      endif
+
+    endfor
+%}
+
+<div
+  class="p-3 space-x-2 flex items-center"
+  data-cartform-target="item"
+  data-line="{{ item.index | plus: 1 }}"
+  data-key="{{ item.key }}"
+  data-transaction-id="{{ transactionId }}">
+  <div class="w-[60px] flex-shrink-0">
+    {% render 'responsive-image' with image: item.image, widths: '60,100,200' %}
+  </div>
+  <div class="pl-5 flex-grow flex flex-col items-start justify-center">
+    <span class="text-xs font-bold tracking-wide">{{ item.product.title }}</span>
+    {% unless item.properties == empty %}
+      <ul class="text-xs pt-1 pl-2">
+        {% for property in item.properties %}
+          {% liquid
+                assign firstLetter = property.first | first
+
+                if firstLetter == '_'
+                    continue
+                endif
+          %}
+
+
+          <li class="">
+            <span class="font-semibold">{{ property.first }}:</span>
+            <span>{{ property.last }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endunless %}
+  </div>
+  <div class="w-[175px] flex-shrink-0 space-x-2 grid grid-cols-[2fr_1fr_1fr]">
+    <div class="flex-grow flex justify-center">
+      {% unless isAddon %}
+        {% render 'cart-item-quantity' with item: item %}
+      {% endunless %}
+    </div>
+    <div class="flex items-center justify-center text-xs font-bold">
+      <span>
+        {% liquid
+        if item.final_line_price == 0
+          echo 'FREE'
+        else
+          echo item.final_line_price | money_without_trailing_zeros 
+        endif
+      %}
+      </span>
+    </div>
+    {% unless isAddon %}
+      <div
+        data-controller="itemquantity"
+        data-itemquantity-line-value="{{ item.index | plus: 1 }}"
+        data-itemquantity-cartform-outlet="#cart-drawer-items"
+        data-action="update->section#refresh remove->cartform#removeItems"
+        class="pl-5 flex items-center justify-center text-xs font-bold">
+        <button
+          data-itemquantity-target="remove"
+          {% if isMain %}
+          data-transaction-id="{{ transactionId }}"
+          {% endif %}
+          type="button"
+          class="w-[15px] h-[15px] fill-accent">
+          {% render 'icon-close' %}
+        </button>
+      </div>
+    {% endunless %}
+  </div>
+</div>

@@ -1,0 +1,42 @@
+<div
+  data-controller="itemquantity"
+  data-itemquantity-line-value="{{ item.index | plus: 1 }}"
+  data-action="update->section#refresh"
+  class="flex items-center space-x-1">
+  <input
+    id="Quantity-{{ item.index | plus: 1 }}"
+    data-index="{{ item.index | plus: 1 }}"
+    data-quantity-variant-id="{{ item.variant.id }}"
+    type="number"
+    name="updates[]"
+    data-itemquantity-target="input"
+    class="w-[25px] h-[25px] bg-gray-200 text-center appearance-none text-xs clean-number"
+    value="{{ item.quantity }}"
+    min="{{ item.variant.quantity_rule.min }}"
+    {% if item.variant.quantity_rule.max != null %}
+    max="{{ item.variant.quantity_rule.max }}"
+    {% endif %}
+    type="number" />
+  <div class="flex flex-col space-y-0">
+    <button
+      type="button"
+      name="plus"
+      aria-label="Increase Quantity of {{ item.title }}"
+      data-itemquantity-target="plus"
+      class="js-required w-[15px] h-[15px]">
+      <div class="rotate-180 transform">
+        {% render 'icon-filled-carat' %}
+      </div>
+    </button>
+    <button
+      type="button"
+      name="minus"
+      aria-label="Decrease Quantity of {{ item.title }}"
+      data-itemquantity-target="minus"
+      class="js-required w-[15px] h-[15px]">
+      <div class="">
+        {% render 'icon-filled-carat' %}
+      </div>
+    </button>
+  </div>
+</div>

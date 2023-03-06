@@ -1,0 +1,132 @@
+{% liquid
+   assign product_form_id = 'product-form-' | append: section.id
+%}
+
+<div
+  data-controller="zoom"
+  data-action="resize@window->zoom#screen"
+  class="grid grid-cols-1 md:grid-cols-3 page-pad gap-5">
+  <div class="md:col-span-2 flex flex-col-reverse md:flex-row" data-aos="fade-right">
+    <div data-zoom-target="container" class="w-full md:w-[100px] flex-shrink-0 flex items-center">
+      {% capture thumbSlides %}
+        {% for media in product.media %}
+          <div class="w-1/4 md:w-full embla-slide cursor-pointer">
+            {% if media.media_type == 'image' %}
+              {% render 'responsive-image' with image: media, widths: "100,150" %}
+            {% endif %}
+          </div>
+        {% endfor %}
+      {% endcapture %}
+
+      {% capture breakpointSettings %}
+       {% # @prettify-ignore-next %}
+        <script type="text" data-carousel-target="breakpoints">
+          {
+            "breakpoints": {
+              "(max-width: 768px)": {
+                "axis": "x"
+              }
+            }
+          }
+        </script>
+      {% endcapture %}
+
+      {% render 'embla-carousel' with slides: thumbSlides
+       , containScroll: 'keepSnaps',
+       dragFree: true,
+       axis: 'y',
+       wrapper: 'pdp-thumbs-carousel',
+       container: 'flex space-x-2 md:flex-col md:space-x-0 md:space-y-2 md:h-[535px]',
+       breakpointSettings: breakpointSettings %}
+    </div>
+    <div class="md:pl-4 flex items-center justify-center relative">
+      {% capture mainSlides %}
+        {% for media in product.media %}
+          <div class="w-full embla-slide flex items-center justify-center">
+            {% if media.media_type == 'image' %}
+              {% render 'responsive-image' with image: media, zoom: true, widths: '300,400,600,800,900,1200' %}
+            {% endif %}
+          </div>
+        {% endfor %}
+      {% endcapture %}
+
+      {% render 'embla-carousel' with slides: mainSlides, thumbnails: '.pdp-thumbs-carousel' %}
+      <div data-zoom-target="lens" class="z-[10] top-0 left-0 w-10 h-10 pointer-events-none"></div>
+    </div>
+  </div>
+  <div
+    data-controller="product"
+    data-product-drawer-outlet="#cart-drawer"
+    data-product-section-outlet="#cart-drawer"
+    data-product-form-id-value="{{ product_form_id }}"
+    class="w-full flex items-center relative"
+    data-aos="fade-left">
+    <div data-zoom-target="zoomed" class="empty:hidden z-10 absolute top-0 left-0 right-0 h-full max-h-[95vh] border-accent border-2"></div>
+  
+    <div class="w-full text-center space-y-3 sticky top-[90px] pb-14">
+  
+      <h1 class="font-chronicle text-3xl">{{ product.title }}</h1>
+      {% render 'product-price' product: product, section: section %}
+
+      {% render 'product-form-options' with form_id: product_form_id, section: section, product: product %}
+      {% render 'product-addons' with product: product, form_id: product_form_id %}
+
+      {% comment %} Buy Buttons Only - Option Selections/Line Item Properties fed in via [form] attribute {% endcomment %}
+      <div class="form-wrapper" data-product-form-wrapper>
+        {%- form 'product', product, id: product_form_id, class: 'form', data-type: 'add-to-cart-form', data-product-target: 'form' -%}
+          {% comment %} Initial Variant ID {% endcomment %}
+          <input
+            type="hidden"
+            name="id"
+            value="{{ product.selected_or_first_available_variant.id }}"
+            class="product-variant-id" />
+
+          <div class="pt-5 w-full flex space-x-2">
+            <div class="w-[50px] z-[-1] relative bg-white border border-black">
+              <label class="absolute top-0 left-0 right-0 text-center text-xs" for="{{ section.id }}-quantity">QTY</label>
+              <input
+                type="number"
+                class="clean-number focus:outline-none w-full h-full text-center text-sm px-1 pt-5 pb-2"
+                name="quantity"
+                id="{{ section.id }}-quantity"
+                value="1" />
+            </div>
+            <button
+              type="submit"
+              data-product-target="submit"
+              class="py-3 px-8 bg-accent text-white flex-grow"
+            >ADD TO BAG</button>
+          </div>
+        {%- endform -%}
+      </div>
+
+      {% comment %} <script type="text" data-product-target="model">{{ product | json }}</script> {% endcomment %}
+
+      {% render 'product-json' with product: product %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Main Product",
+    "class": "main-product shopify-section w-full",
+    "presets": [
+      {
+        "name": "Main Product"
+      }
+    ],
+    "templates": ["product"],
+    "settings": [
+      {
+        "type": "header",
+        "content": "Product Options"
+      }, {
+        "type": "textarea",
+        "id": "swatch_options",
+        "label": "Swatch Options",
+        "info": "Comma separated list of product option names that should display as swatches instead of a dropdown"
+      }
+    ]
+  }
+{% endschema %}

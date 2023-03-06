@@ -7,6 +7,16 @@
 </script>
 
 {% # SCRIPT PRELOADS %}
+<link
+  as="script"
+  crossorigin
+  href="{{ 'theme.min.js' | asset_url -}}"
+  rel="preload">
+
+<script
+  src="{{ 'theme.min.js' | asset_url }}"
+  data-spx-eval="false"
+  defer></script>
 
 <link
   as="script"
@@ -14,13 +24,10 @@
   href="{{ 'bundle.min.js' | asset_url -}}"
   rel="preload">
 
-
 <script
   src="{{ 'bundle.min.js' | asset_url }}"
   data-spx-eval="false"
   type="module"
   defer>
-
-  app()
-
+  app();
 </script>

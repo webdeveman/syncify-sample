@@ -1,0 +1,8 @@
+{
+    "sections": {
+        "header": {
+            "type": "blocks-mixed-content"
+        }
+    },
+    "order": [ "header" ]
+}

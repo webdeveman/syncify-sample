@@ -1,0 +1,47 @@
+{% comment %} 
+  We need to create this custom body beacuse the standard object
+  created by {{ product | json }} doesn't contain all the values
+  we need. Specifically metafields for the addons.
+
+  Props:
+  product {Shopify Object} - Required
+  controller {String} - Stimulus controller name to be used for the target attribute. Will default to 'product'
+
+
+{% endcomment %}
+
+{% assign controller = controller | default: 'product' %}
+
+{% # @prettify-ignore-next %}
+<script type="text" data-{{ controller }}-target="productModel" data-product="{{ product.handle }}">
+{
+  "product": {{ product | json }},
+  "metafields": {
+        "product": [
+            {%- for addon in product.metafields.wip.addons.value -%}
+                {
+                    "handle": {{ addon.system.handle | json }},
+                    "value": {{ addon | json }}
+                }
+                {% unless forloop.last %},{% endunless %}
+            {%- endfor -%}
+        ],
+        "variants": [
+            {%- for variant in product.variants -%}
+                {
+                    "id": {{ variant.id | json }},
+                    "metafields": [
+                        {% for addon in variant.metafields.wip.addons.value %}
+                        {
+                            "handle": {{ addon.system.handle | json }},
+                            "value": {{ addon | json }}
+                        }
+                        {% unless forloop.last %},{% endunless %}
+                        {% endfor %}
+                    ]
+                }{%- unless forloop.last -%},{%- endunless -%}
+            {%- endfor -%}
+        ]
+    }
+}
+</script>

@@ -1,0 +1,22 @@
+<div class="page-pad py-10 grid grid-cols-1 md:flex md:justify-center  gap-4 text-center [&_td]:mx-auto [&_tr]:flex [&_tr:first-child]:text-xl [&_tr:first-child]:font-chronicle [&_tbody]:flex [&_tbody]:flex-col">
+  {{ product.description }}
+</div>
+
+{% schema %}
+  {
+    "name": "Product Description",
+    "class": "product-description shopify-section",
+    "presets": [
+      {
+        "name": "Product Description"
+      }
+    ],
+    "templates": ["product"],
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "There are no settings here. This section will take the product description and split the tables into columns"
+      }
+    ]
+  }
+{% endschema %}

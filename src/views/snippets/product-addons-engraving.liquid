@@ -1,0 +1,47 @@
+{% comment %} https://www.refactoredtelegram.net/2021/02/communication-among-stimulus-controllers-part-1/ {% endcomment %}
+<div class="space-y-3" data-aos="zoom-in">
+  <div class="w-full flex flex-col">
+    <label for="engraving-{{ form_id }}" class="font-chronicle">{{ engraving.label | default: 'Engraving' }}</label>
+    <input
+      type="text"
+      name="properties[{{ engraving.label | default: 'Engraving' }}]"
+      form="{{ form_id }}"
+      disabled
+      class="py-1.5 text-center border border-accent w-[250px] mx-auto bg-[#e6e6e6]"
+      id="engraving-{{ form_id }}"
+      required="{{engraving.required}}" />
+  </div>
+
+  {% for variant in engraving.variants.value %}
+    <input
+      type="hidden"
+      value="{{ variant.id }}"
+      form="{{ form_id }}"
+      name="id_{{ engraving.label | default: 'Engraving' }}" />
+  {% endfor %}
+
+  {% if engraving.position.value.size > 0 %}
+    <div
+      data-controller="dropdown"
+      class="dd-select mx-auto"
+      id="engraving-{{ form_id }}-position">
+      <p class="mb-1 font-chronicle">Engraving Position</p>
+      <button data-dropdown-target="button" type="button">Select Position</button>
+
+      <fieldset id="options" data-dropdown-target="options">
+        <legend class="sr-only">Engraving Position</legend>
+        {% for value in engraving.position.value %}
+          <label for="{{ value | handle }}-{{ engraving.system.id }}">{{ value }}</label>
+          <input
+            id="{{ value | handle }}-{{ engraving.system.id }}"
+            value="{{ value }}"
+            form="{{ form_id }}"
+            disabled
+            name="properties[{{ engraving.label | default: 'Engraving' }} Position]"
+            data-dropdown-target="option"
+            type="radio">
+        {% endfor %}
+      </fieldset>
+    </div>
+  {% endif %}
+</div>

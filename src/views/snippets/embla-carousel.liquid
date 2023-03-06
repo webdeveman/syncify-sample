@@ -1,32 +1,40 @@
 {% comment %} 
-PARAMS
-slides {HTML as String} - child slides
+  PARAMS
+  slides {HTML as String} - child slides
 
-Element Class Params:
-wrapper {String} - classes to be added to embla wrapper
-container {String} - classes to be added to the embla container
+  Element Class Params:
+  wrapper {String} - classes to be added to embla wrapper
+  container {String} - classes to be added to the embla container
 
-Embla Carousel Params:
-breakpoints {String} - String value compatible w/ the Stimulus Controller Viewports ex: "xs|sm|md"
-containScroll {String} - Clear leading and trailing empty space that causes excessive scrolling. Ex: ''
-draggable {Boolean} - (true|false) as string
-dragFree {Boolean} - (true|false) as string
-loop {Boolean} - (true|false) as string
+  Embla Carousel Params:
+  align {String}
+  arrows {HTML as String}
+  breakpoints {String} - String value compatible w/ the Stimulus Controller Viewports ex: "xs|sm|md"
+  breakpointSettings {JSON as String} - Should be JSON string of embla settings.
+  containScroll {String} - Clear leading and trailing empty space that causes excessive scrolling. Ex: ''
+  draggable {Boolean} - (true|false) as string
+  dragFree {Boolean} - (true|false) as string
+  loop {Boolean} - (true|false) as string
+  highlight {Boolean} - (true|false) as string
 
-skipSnaps {Boolean} - (true|false) as string
-startIndex {Number|String} - Starting index for carousel
-speed {Number|String} - 0 - 20 value 
+  skipSnaps {Boolean} - (true|false) as string
+  startIndex {Number|String} - Starting index for carousel
+  speed {Number|String} - 0 - 20 value 
 
 {% endcomment %}
 
 {%- liquid 
-
-    if breakpoints == blank
-        assign breakpoints = ''
-    endif
+    assign arrows = arrows | default: false
+    assign axis = axis | default: 'x'
+    assign align = align | default: 'start'
+    assign breakpoints = breakpoints | default: ''
+    assign breakpointSettings = breakpointSettings | default: '<script type="text" data-carousel-target="breakpoints">{ "breakpoints": {} }</script>'
+    assign wrapper = wrapper | default: ''
+    assign container = container | default: ''
+    assign highlight = highlight | default: 'false'
 
     if containScroll == blank
-        assign containScroll = ''
+        assign containScroll = 'trimSnaps' 
     endif
 
     if draggable == blank
@@ -58,20 +66,28 @@ speed {Number|String} - 0 - 20 value
     endif
 -%}
 
-
 <div
-  class="embla overflow-hidden"
+  class="embla overflow-hidden {{ wrapper }}"
   data-controller="carousel"
+  data-carousel-align-value="{{ align }}"
+  data-carousel-axis-value="{{ axis }}"
   data-carousel-breakpoint-value="{{ breakpoints }}"
   data-carousel-contain-scroll-value="{{ containScroll }}"
   data-carousel-draggable-value="{{ draggable }}"
+  data-carousel-highlight-value="{{ highlight }}"
   data-carousel-drag-free-value="{{ dragFree }}"
   data-carousel-loop-value="{{ loop }}"
   data-carousel-skip-snaps-value="{{ skipSnaps }}"
   data-carousel-speed-value="{{ speed }}"
+  {% if thumbnails %}
+  data-carousel-carousel-outlet="{{ thumbnails }}"
+  {% endif %}
   data-carousel-start-index-value="{{ startIndex }}"
   data-action="resize@window->carousel#screen">
-  <div class="embla__container flex [&_.embla-slide]:flex-shrink-0 [&_.embla-slide]:flex-grow-0">
+  {% if breakpointSettings %}
+    {{ breakpointSettings }}
+  {% endif %}
+  <div class="embla__container {{ container }} flex [&_.embla-slide]:flex-shrink-0 [&_.embla-slide]:flex-grow-0">
     {{ slides }}
   </div>
 </div>

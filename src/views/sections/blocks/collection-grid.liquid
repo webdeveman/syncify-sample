@@ -1,0 +1,158 @@
+{% paginate collection.products by section.settings.per_page %}
+  {% liquid
+    capture container
+        echo 'page-pad w-full grid '
+
+        if section.settings.enable_filters
+          echo 'grid-cols-[250px_1fr]'
+        else
+          echo 'grid-cols-1'
+        endif
+    endcapture
+  %}
+  <div class="{{ container }}">
+    {% if section.settings.enable_filters %}
+      <div class="w-full flex-shrink-0 pr-10">Filters here</div>
+    {% endif %}
+
+    <div class="w-full pb-10">
+      {%- liquid
+          assign current = paginate.current_page
+          assign modulo = index | modulo: 2 
+          assign index = current | minus: 1 | times: 2 | minus: modulo
+       -%}
+
+      <div class="grid collection-grid gap-4 {{ section.settings.mobile_width }} {{ section.settings.tablet_width }} {{ section.settings.desktop_width }}">
+        {% for item in collection.products %}
+          {% render 'grid-item' with item: item %}
+
+          {% if forloop.index0 == 5 or forloop.index0 == 15 %}
+            {% for value in collection.metafields.theme.features.value offset: index limit: 1 %}
+              {% render 'collection-feature-item' with
+               item: value,
+               class: 'row-span-2 col-span-2' %}
+              {% assign index = index | plus: 1 %}
+            {% endfor %}
+          {% endif %}
+
+        {% endfor %}
+        {% comment %} {% render 'grid-item' for collection.products as item %} {% endcomment %}
+        {% comment %} 
+        {% for value in collection.metafields.theme.features.value offset: index limit: 2 %}
+        {% render 'collection-feature-item' with
+        item: value,
+        class: featureClasses[forloop.index0] %}
+        {% endfor %} {% endcomment %}
+      </div>
+
+
+      {% if paginate.pages > 1 %}
+        {% capture target %}
+          #shopify-section-{{ section.id }} .collection-grid
+        {% endcapture %}
+        {% render 'pagination' with paginate: paginate, target: target %}
+      {% endif %}
+    </div>
+  </div>
+{% endpaginate %}
+
+{% schema %}
+  {
+    "name": "Collection Grid",
+    "class": "shopify-section collection-grid",
+    "tag": "section",
+    "presets": [
+      {
+        "name": "Collection Grid"
+      }
+    ],
+    "templates": ["collection"],
+    "settings": [
+      {
+        "type": "header",
+        "content": "Filtering"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_filters",
+        "label": "Enable Filters"
+      },
+      {
+        "type": "paragraph",
+        "content": "All filters will be fed in and controlled from the Shopify Discovery app."
+      },
+      {
+        "type": "header",
+        "content": "Grid Layout"
+      }, {
+        "type": "select",
+        "id": "mobile_width",
+        "label": "Mobile Columns",
+        "options": [
+          {
+            "value": "grid-cols-1",
+            "label": "1 Column"
+          }, {
+            "value": "grid-cols-2",
+            "label": "2 Columns"
+          }, {
+            "value": "grid-cols-3",
+            "label": "3 Columns"
+          }, {
+            "value": "grid-cols-4",
+            "label": "4 Columns"
+          }
+        ],
+        "default": "grid-cols-2"
+      }, {
+        "type": "select",
+        "id": "tablet_width",
+        "label": "Tablet Columns",
+        "options": [
+          {
+            "value": "sm:grid-cols-1",
+            "label": "1 Column"
+          }, {
+            "value": "sm:grid-cols-2",
+            "label": "2 Columns"
+          }, {
+            "value": "sm:grid-cols-3",
+            "label": "3 Columns"
+          }, {
+            "value": "sm:grid-cols-4",
+            "label": "4 Columns"
+          }
+        ],
+        "default": "sm:grid-cols-3"
+      }, {
+        "type": "select",
+        "id": "desktop_width",
+        "label": "Desktop Columns",
+        "options": [
+          {
+            "value": "lg:grid-cols-1",
+            "label": "1 Column"
+          }, {
+            "value": "lg:grid-cols-2",
+            "label": "2 Columns"
+          }, {
+            "value": "lg:grid-cols-3",
+            "label": "3 Columns"
+          }, {
+            "value": "lg:grid-cols-4",
+            "label": "4 Columns"
+          }
+        ],
+        "default": "lg:grid-cols-4"
+      }, {
+        "type": "range",
+        "id": "per_page",
+        "label": "Products Per Page",
+        "min": 8,
+        "max": 100,
+        "step": 1,
+        "default": 48
+      }
+    ]
+  }
+{% endschema %}

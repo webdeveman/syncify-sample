@@ -1,0 +1,63 @@
+{% comment %}
+  This snippet is to build out fully responsive lazy-loaded
+  <img /> elements without having to use Shopify's costly img_tag.
+
+  We want to be able to turn a liquid Image object into a fully response 
+  <img /> tag that will use a src, srcset, and focal point if required.
+
+  PARAMS
+  image {Shopify Liquid Object}!Required
+  width {Number}
+  crop {String}
+  class {String}
+  loading {String}
+  alt {String}
+  sizes {String}
+  focal {Boolean} - Enable focal point
+  widths {Number[] as String} - Comma separated string of values for widths.
+  wrapper {String} - Html Classes as string
+  zoom {Boolean} - For use with the Zoom Controller.
+
+{% endcomment %}
+
+{%- liquid 
+    assign width = width | default: image.width
+    assign crop = crop | default: 'center'
+    assign class = class | default: '' | append: ' lazyload object-fit'
+    assign loading = loading | default: 'lazy'
+    assign alt = alt | default: image.alt
+    assign sizes = sizes | default: '100vw'
+    assign wrapper = wrapper | default: ''
+
+    assign baseImg = image | image_url: width: 10, crop: 'center'
+
+    if focal
+        assign wrapper = wrapper | append: ' lazyload'
+        assign class = class | append: ' !opacity-0'
+    endif
+-%}
+
+<div
+  data-image="{{ image }}"
+  class="{{ wrapper }}"
+  {% if focal %}data-bg="{{  image | image_url: width: width, crop: crop  }}"style="background-position: {{ image.presentation.focal_point }}; background-size: cover; background-repeat: no-repeat;"{% endif %}>
+  <img
+    src="{{ baseImg }}"
+    data-src-template="{{ baseImg | replace: 'width=10', '[width]' }}"
+    data-widths="{{ widths }}"
+    {% if primary %}
+    src="{{ image | image_url: width: width, crop: crop }}"
+    {% else %}
+    data-src="{{ image | image_url: width: width, crop: crop }}"
+    {% endif %}
+    class="{{ class }}"
+    {% unless primary %}
+    loading="{{ loading }}"
+    {% endunless %}
+    {% if zoom %}
+    data-zoom-target="image"
+    {% endif %}
+    alt="{{ alt }}"
+    width="{{ width }}"
+    height="{{ image.height }}" />
+</div>

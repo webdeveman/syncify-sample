@@ -1,0 +1,134 @@
+{% comment %} <button id="modal-button" aria-haspopup="dialog" aria-controls="cart-drawer">Open Modal</button> {% endcomment %}
+
+<div
+  id="cart-drawer"
+  data-controller="drawer section"
+  role="dialog"
+  aria-modal="true"
+  aria-hidden="false"
+  aria-labelledby="cart-modal-title"
+  data-section-id-value="{{ section.id }}"
+  class="hidden drawer-panel drawer-right w-full drawer-transition group right-0 top-[88px] z-[19] items-start justify-end"
+  tabindex="-1">
+  <div
+    data-modal-target="body"
+    role="document"
+    class=" w-full max-w-[475px] w-full relative bg-white border-2 border-accent">
+    <div class="group-[.loading]:flex hidden is-screen z-10 bg-white bg-opacity-20 backdrop-blur-sm items-center justify-center">
+      <div class="w-[25px] h-[25px]">
+        {% render 'component-loader' %}
+      </div>
+    </div>
+
+    <div class="p-3 px-4 relative flex items-center justify-between border-b border-gray-200">
+      <h2 id="cart-modal-title" class="text-sm font-bold tracking-wider">{{ section.settings.title }}</h2>
+      <button
+        data-modal-target="closer"
+        id="modal-close"
+        aria-controls="cart-drawer"
+        aria-label="Close modal">
+        <div class="w-[15px] h-[15px] fill-accent">
+          {% render 'icon-close' %}
+        </div>
+      </button>
+    </div>
+    <div class="w-full">
+      {% if cart.item_count == 0 %}
+        <div class="text-center space-y-3 py-5 flex flex-col items-center justify-center">
+          <p>Your cart is empty!</p>
+          <a class="bg-black text-white py-2 px-5 text-sm font-semibold tracking-wide" href="{{ section.settings.continue_shopping }}">CONTINUE SHOPPING</a>
+        </div>
+      {% else %}
+        <form
+          action="/checkout"
+          method="post"
+          data-section-target="replace"
+          data-cartform-removing-class=" overflow-hidden h-0 transition-all !py-0 opacity-0"
+          data-controller="cartform"
+          class="divide-y divide-gray-200 pb-3"
+          id="cart-drawer-items">
+          <div class="items-wrapper max-h-[300px] overflow-y-auto divide-y divide-gray-200">
+            {% render 'cart-drawer-item' for cart.items as item %}
+          </div>
+
+
+          <div class="py-4 px-4">
+            <div class="relative">
+              <input
+                class="w-full bg-gray-200 py-1 px-2 peer block min-h-[auto] border-0 leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 "
+                data-cartform-target="discount"
+                data-action="cartform#onDiscountInput"
+                name="discount"
+                id="{{ section.id }}-promo-code" />
+              <label class="text-sm pointer-events-none absolute top-1.5 left-3 mb-0 max-w-[90%] origin-[0_0] truncate leading-[1.6] text-black transition-all duration-200 ease-out peer-[.is-valid]:-translate-y-[1.35rem] peer-[.is-valid]:left-1 peer-[.is-valid]:scale-[0.8] peer-focus:-translate-y-[1.35rem] peer-focus:left-1 peer-focus:scale-[0.8]" for="{{ section.id }}-promo-code">Promo Code</label>
+            </div>
+          </div>
+          <div class="py-4 px-4">
+            <div class="relative">
+              <textarea
+                class="w-full bg-gray-200 py-1 px-2 peer block min-h-[auto] border-0 leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 "
+                data-cartform-target="note"
+                data-action="cartform#onNoteInput"
+                rows="1"
+                cols="60"
+                name="note"
+                id="{{ section.id }}-form-note">{{ cart.note }}</textarea>
+              <label class="text-sm pointer-events-none absolute top-1.5 left-3 mb-0 max-w-[90%] origin-[0_0] truncate leading-[1.6] text-black transition-all duration-200 ease-out peer-focus:-translate-y-[1.35rem] peer-focus:left-1 peer-focus:scale-[0.8]  peer-[.is-valid]:-translate-y-[1.35rem] peer-[.is-valid]:left-1 peer-[.is-valid]:scale-[0.8] " for="{{ section.id }}-form-note">Special Instructions</label>
+              <div class="absolute right-3 top-1/2 -translate-y-1/2  hidden peer-[.is-editing]:flex w-[15px] h-[15px]">
+                {% render 'component-loader' %}
+              </div>
+              <div class="fill-accent absolute right-3 top-1/2 -translate-y-1/2  hidden peer-[.is-success]:flex w-[15px] h-[15px]">
+                {% render 'icon-check' %}
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-between items-center px-4 py-3 font-bold text-sm tracking-wider" role="status">
+              <h2>SUBTOTAL</h2>
+              <p
+                data-section-target="replace"
+                id="{{ section.id }}-total"
+                class="totals__subtotal-value">{{ cart.total_price | money_with_currency }}</p>
+            </div>
+            <div class="flex flex-col items-center justify-center space-y-2">
+              <button type="submit" class="bg-black text-white py-2 px-8 text-lg">CHECKOUT</button>
+              <a href="/cart" class="font-bold tracking-wider text-sm py-3 px-5">EDIT CART</a>
+            </div>
+          </div>
+        </form>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% # @prettify-ignore-next %}
+<style >
+  .shopify-section.stuck ~ #shopify-section-{{ section.id }} #cart-drawer {
+    top: 64px;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Cart Drawer",
+  "class": "shopify-section",
+  "tag": "aside",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Title",
+      "default": "YOUR CART"
+    },
+    {
+      "type": "url",
+      "id": "continue_shopping",
+      "label": "Continue Shopping"
+    }
+  ]
+}
+{% endschema %}

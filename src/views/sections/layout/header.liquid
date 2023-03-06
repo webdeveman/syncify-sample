@@ -1,10 +1,15 @@
-<header data-controller="header"  class="relative bg-white text-xs">
-  <div class="main flex max-w-[1440px] px-4 mx-auto">
-    <div class="md:w-2/5 flex justify-start">
-      <button type="button" class="md:hidden">
+<header data-controller="header" class="w-full transition-all relative bg-white md:bg-transparent [&.stuck]:md:bg-white text-xs">
+  <div class="main flex max-w-[1440px] page-pad mx-auto py-0">
+    <div class="w-1/3 md:w-2/5 flex justify-start overflow-hidden md:overflow-visible">
+      <button
+        type="button"
+        class="md:hidden py-5 pr-10 peer text-left w-full"
+        aria-controls="navigation-wrapper"
+        data-action="header#toggle"
+        aria-expanded="false">
         Toggle
       </button>
-      <div class="absolute md:static left-0 bg-primary md:bg-transparent top-full w-full md:w-auto p-2">
+      <div id="navigation-wrapper" class="animate-fade-slide md:animate-none hidden overflow-hidden md:overflow-visible peer-aria-expanded:flex flex-col md:flex-row md:flex absolute md:static left-0 bg-primary md:bg-transparent top-full md:top-auto md:left-auto w-full md:w-auto p-2 md:pr-2 md:pl-0 md:py-0">
         {% # Header Predictive Search %}
         <div class="md:hidden">
           <form
@@ -22,13 +27,13 @@
               value="last">
             <div class="relative">
               <input
-                class="w-full py-2 pl-2 text-sm border"
+                class="w-full py-2 pl-4 text-sm border"
                 type="search"
+                data-header-target="searchInput"
                 name="q"
                 value="{{ search.terms | escape }}"
                 id="nav-search"
                 placeholder="{{ 'general.search.search' | t }}"
-                {%- if section.settings.predictive_search_enabled -%}
                 role="combobox"
                 aria-expanded="false"
                 aria-owns="predictive-search-results"
@@ -38,38 +43,134 @@
                 autocorrect="off"
                 autocomplete="off"
                 autocapitalize="off"
-                spellcheck="false"
-                {%- endif -%} />
+                spellcheck="false" />
               <label for="nav-search" class="sr-only">Search site</label>
             </div>
-
-            {%- if section.settings.predictive_search_enabled -%}
-              <div
-                class="results"
-                tabindex="-1"
-                data-predictive-search></div>
-            {%- endif -%}
           </form>
         </div>
 
-        {% # Mobile and Desktop Navigation %}
-        <nav class="pt-2 md:pt-0 grid grid-cols-2 text-xs md:flex w-full">
+        {% # Desktop Navigation %}
+        <nav
+          role="navigation"
+          aria-labelled="Desktop Navigation"
+          class="hidden pt-2 md:pt-0 text-xs md:flex w-full">
           {% for link in section.settings.main_linklist.links %}
-            <div class="py-3 pr-5 whitespace-nowrap">
-              {{ link.title }}
+            <div class="py-6 pr-5 whitespace-nowrap group" id="headerItem-{{ link.title | handle }}-{{ forloop.index0 }}">
+              <a href="{{ link.url }}">{{ link.title }}</a>
+              {% if link.links != blank %}
+                {% render 'mega-menu' with link: link %}
+              {% endif %}
             </div>
           {% endfor %}
         </nav>
+
+        <div data-header-target="searchResults" class="flex peer group duration-300 overflow-hidden transition-all bg-primary md:hidden [&.active]:pt-5">
+          <div class="group-[.loading]:flex items-center justify-center hidden w-full pt-2 pb-5">
+            <div class="w-12 h-12">
+              {% render 'component-loader' %}
+            </div>
+          </div>
+          <div
+            class="group-[.loading]:hidden flex"
+            role="list"
+            data-header-target="searchResultsList pt-5"></div>
+        </div>
+
+        {% # Mobile Navigation %}
+        <nav
+          role="navigation"
+          aria-label="Mobile Navigation"
+          data-header-target="mobileNav"
+          class="md:hidden peer-[.active]:hidden flex relative group overflow-hidden">
+          <div class="grid grid-cols-2 w-full flex-shrink-0 transition-all group-[.active]:-translate-x-full duration-300">
+            {% for link in section.settings.mobile_linklist.links %}
+              <div class="w-full border-2 transition-all border-transparent border-b-white even:border-l-white">
+                {% if link.levels > 1 %}
+                  <button
+                    data-action="header#onMobileClick"
+                    type="button"
+                    aria-expanded="false"
+                    aria-controls="{{ link.title | handle }}-{{ forloop.index0 }}-mobile"
+                    class="w-full py-5 px-2 flex items-center justify-center">{{ link.title }}</button>
+                  {% if link.links != blank %}
+                    <div id="{{ link.title | handle }}-{{ forloop.index0 }}-mobile" class="hidden flex-col pl-12">
+                      {% for child in link.links %}
+                        <a href="{{ child.url }}" class="pb-0 text-lg font-chronicle">{{ child.title }}</a>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                {% else %}
+                  <a href="{{ link.url }}" class="w-full py-5 px-2 flex items-center justify-center">{{ link.title }}</a>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+          <div class="w-full transition-all flex-shrink-0 show-menu group-[.active]:-translate-x-full duration-300 [&_.hidden]:flex relative" data-header-target="mobileNavTier">
+            <button
+              data-action="header#clearSubMenu"
+              type="button"
+              aria-label="Go Back"
+              class="absolute top-4 left-0 w-10 h-10 [background-image:var(--svg-arrow)] [background-size:20px] bg-top bg-no-repeat"></button>
+            <div class="wrapper pt-2"></div>
+          </div>
+        </nav>
+
+        {%  liquid 
+          assign mobileFeatures = section.blocks | where: 'type', mobileFeatures
+        %}
+        {% if mobileFeatures.size > 0 %}
+          <div class="md:hidden flex py-5 peer-[.active]:hidden">
+            {% capture slides %}
+              {% for feature in mobileFeatures %}
+                <div class="w-full embla-slide">
+                  {% render 'responsive-image' with image: feature.settings.image, focal: true %}
+                </div>
+              {% endfor %}
+            {% endcapture %}
+
+            {% render 'embla-carousel' slides: slides, containScroll: 'trimSnaps', breakpoints: 'sm' %}
+          </div>
+        {% endif %}
       </div>
     </div>
     <div class="flex md:w-auto flex-grow px-1.5">
       <a href="/" class="w-full h-full flex items-center justify-center">
-        LOGO
+        {% if section.settings.logo %}
+          {% render 'responsive-image' image: section.settings.logo, width: section.settings.logo_width, alt: shop.name %}
+          {% comment %} <img src="{{ section.settings.logo | image_url: width: section.settings.logo_width }}" alt="{{ shop.name }}" /> {% endcomment %}
+          {% if template.name == 'index' %}
+            <h1 class="sr-only">
+              {{ shop.name }}
+            </h1>
+          {% endif %}
+        {% else %}
+          {% if template.name == 'index' %}
+            <h1 class="sr-only">
+              {{ shop.name }}
+            </h1>
+          {% else %}
+            <span>{{ shop.name }}</span>
+          {% endif %}
+        {% endif %}
       </a>
     </div>
-    <div class="md:w-2/5 flex items-center justify-end">
+    <div class="w-1/3 md:w-2/5 flex items-center justify-end">
       <div>
-        CART ACCOUNTS
+        <ul class="flex space-x-2">
+          <li>Accounts</li>
+          <li>
+            <button
+              class="js-required"
+              aria-haspopup="dialog"
+              aria-controls="cart-drawer">
+              Cart
+            </button>
+            <noscript>
+              <a href="/cart">Cart</a>
+            </noscript>
+          </li>
+        </ul>
+
       </div>
     </div>
   </div>
@@ -78,7 +179,7 @@
 {% schema %}
   {
     "name": "Header",
-    "class": "header-section sticky top-0 left-0 z-10",
+    "class": "header-section",
     "settings": [
       {
         "type": "header",
@@ -110,10 +211,22 @@
         "id": "main_linklist",
         "label": "Main Menu (Navigation)"
       }, {
-        "type": "checkbox",
-        "id": "predictive_search_enabled",
-        "label": "Enable Predictive Search",
-        "default": true
+        "type": "link_list",
+        "id": "mobile_linklist",
+        "label": "Mobile Menu (Navigation)"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "mobileFeature",
+        "name": "Mobile Feature",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          }
+        ]
       }
     ]
   }
